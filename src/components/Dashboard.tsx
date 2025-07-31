@@ -295,6 +295,20 @@ export function Dashboard({ language = "fr" }: DashboardProps) {
     itemsPerPage: 5
   });
 
+  // Ajout du hook de pagination pour les recherches populaires
+  const {
+    currentData: paginatedTopSearches,
+    currentPage: topSearchesCurrentPage,
+    totalPages: topSearchesTotalPages,
+    itemsPerPage: topSearchesItemsPerPage,
+    totalItems: topSearchesTotalItems,
+    setCurrentPage: setTopSearchesCurrentPage,
+    setItemsPerPage: setTopSearchesItemsPerPage
+  } = usePagination({
+    data: topSearchesData,
+    itemsPerPage: 5
+  });
+
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="text-white rounded-lg p-8" style={{ backgroundColor: '#40915d' }}>
@@ -507,11 +521,11 @@ export function Dashboard({ language = "fr" }: DashboardProps) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {topSearchesData.map((item, index) => (
+              {paginatedTopSearches.map((item, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">
-                      {index + 1}
+                      {index + 1 + (topSearchesCurrentPage - 1) * topSearchesItemsPerPage}
                     </div>
                     <span className="text-sm font-medium">{item.term}</span>
                   </div>
@@ -526,6 +540,17 @@ export function Dashboard({ language = "fr" }: DashboardProps) {
                   </div>
                 </div>
               ))}
+            </div>
+            {/* Pagination pour les recherches populaires */}
+            <div className="mt-4">
+              <Pagination
+                currentPage={topSearchesCurrentPage}
+                totalPages={topSearchesTotalPages}
+                totalItems={topSearchesTotalItems}
+                itemsPerPage={topSearchesItemsPerPage}
+                onPageChange={setTopSearchesCurrentPage}
+                onItemsPerPageChange={setTopSearchesItemsPerPage}
+              />
             </div>
           </CardContent>
         </Card>
