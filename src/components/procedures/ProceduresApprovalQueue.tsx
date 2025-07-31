@@ -441,7 +441,7 @@ const ProceduresApprovalQueue: React.FC = () => {
           <Card className="p-4">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex items-center">
-                <span className="text-sm font-medium text-gray-700 mr-3">Type de procédure :</span>
+                <span className="text-sm font-medium text-gray-700 mr-3">Type de document :</span>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -452,32 +452,18 @@ const ProceduresApprovalQueue: React.FC = () => {
                   Tous
                 </Button>
                 <Button
-                  variant={typeFilter === 'commercial' ? 'default' : 'outline'}
+                  variant={typeFilter === 'legal' ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => setTypeFilter('commercial')}
+                  onClick={() => setTypeFilter('legal')}
                 >
-                  Commercial
+                  Textes juridiques
                 </Button>
                 <Button
-                  variant={typeFilter === 'administrative' ? 'default' : 'outline'}
+                  variant={typeFilter === 'procedure' ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => setTypeFilter('administrative')}
+                  onClick={() => setTypeFilter('procedure')}
                 >
-                  Administratif
-                </Button>
-                <Button
-                  variant={typeFilter === 'fiscal' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setTypeFilter('fiscal')}
-                >
-                  Fiscal
-                </Button>
-                <Button
-                  variant={typeFilter === 'urbanisme' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setTypeFilter('urbanisme')}
-                >
-                  Urbanisme
+                  Procédures administratives
                 </Button>
               </div>
             </div>
