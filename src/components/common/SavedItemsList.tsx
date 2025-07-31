@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Search, Edit, Trash2, LucideIcon } from "lucide-react";
+import { Pagination } from "@/components/common/Pagination";
 
 interface SavedItem {
   id: number;
@@ -38,9 +39,11 @@ export function SavedItemsList({
   icon: Icon, 
   items, 
   onViewAll,
-  maxItems = 4 
+  maxItems = 4,
+  pagination
 }: SavedItemsListProps) {
-  const displayItems = items.slice(0, maxItems);
+  // Si la pagination est fournie, utiliser tous les items, sinon limiter
+  const displayItems = pagination ? items : items.slice(0, maxItems);
 
   return (
     <Card>
@@ -87,7 +90,22 @@ export function SavedItemsList({
             </div>
           ))}
         </div>
-        {onViewAll && items.length > maxItems && (
+        
+        {/* Pagination */}
+        {pagination && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.totalItems}
+              itemsPerPage={pagination.itemsPerPage}
+              onPageChange={pagination.onPageChange}
+              onItemsPerPageChange={pagination.onItemsPerPageChange}
+            />
+          </div>
+        )}
+        
+        {onViewAll && !pagination && items.length > maxItems && (
           <div className="mt-4 text-center">
             <Button variant="link" onClick={onViewAll} className="text-sm">
               Voir tous les éléments sauvegardés

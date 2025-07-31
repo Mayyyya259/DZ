@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, BarChart3, LucideIcon } from "lucide-react";
+import { Pagination } from "@/components/common/Pagination";
 
 interface PopularItem {
   query: string;
@@ -39,7 +40,8 @@ export function PopularItemsList({
   description, 
   icon: Icon, 
   items,
-  statistics 
+  statistics,
+  pagination
 }: PopularItemsListProps) {
   return (
     <Card>
@@ -82,6 +84,20 @@ export function PopularItemsList({
             </div>
           ))}
         </div>
+        
+        {/* Pagination */}
+        {pagination && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={pagination.currentPage}
+              totalPages={pagination.totalPages}
+              totalItems={pagination.totalItems}
+              itemsPerPage={pagination.itemsPerPage}
+              onPageChange={pagination.onPageChange}
+              onItemsPerPageChange={pagination.onItemsPerPageChange}
+            />
+          </div>
+        )}
         
         {statistics && (
           <div className="p-4 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg">
