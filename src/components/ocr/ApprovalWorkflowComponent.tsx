@@ -28,12 +28,6 @@ import {
   FileSearch
 } from 'lucide-react';
 
-interface ApprovalWorkflowProps {
-  extractedData?: any;
-  onApproval?: (approvedData: any) => void;
-  onRejection?: (reason: string) => void;
-}
-
 interface LegalDocument {
   id: string;
   title: string;
@@ -226,6 +220,7 @@ const ApprovalWorkflowComponent: React.FC = () => {
     return matchesSearch && matchesStatus && matchesType && matchesInsertion;
   });
 
+  // Pagination pour les documents filtrés
   const {
     currentData: paginatedDocuments,
     currentPage,
