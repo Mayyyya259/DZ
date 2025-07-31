@@ -28,7 +28,7 @@ interface LegalDocument {
   id: string;
   title: string;
   type: string;
-  legalCategory: 'loi' | 'decret' | 'arrete' | 'ordonnance' | 'code';
+  legalCategory: 'loi' | 'decret' | 'arrete' | 'ordonnance' | 'code' | 'procedure';
   insertionType: 'manual' | 'ocr';
   submittedBy: string;
   submissionDate: Date;
@@ -159,6 +159,213 @@ const ApprovalWorkflowComponent: React.FC = () => {
         ],
         ocrData: { numero: 'CC-2025', dateGregorienne: '5 février 2025' }
       },
+      // Exemples de procédures administratives
+      {
+        id: '11',
+        title: 'PROCÉDURE - Demande de passeport biométrique',
+        type: 'Procédure Administrative',
+        legalCategory: 'procedure',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 1 * 60 * 60 * 1000),
+        status: 'pending',
+        confidence: 95.8,
+        priority: 'high',
+        comments: [],
+        ocrData: { 
+          numero: 'PROC-001', 
+          dateGregorienne: '15 février 2025',
+          wilaya: 'Alger',
+          delai: '15 jours ouvrables'
+        }
+      },
+      {
+        id: '12',
+        title: 'PROCÉDURE - Création d\'entreprise EURL',
+        type: 'Procédure Commerciale',
+        legalCategory: 'procedure',
+        insertionType: 'manual',
+        submittedBy: 'Kamel Boudiaf',
+        submissionDate: new Date(Date.now() - 3 * 60 * 60 * 1000),
+        status: 'under_review',
+        confidence: 100,
+        priority: 'medium',
+        assignedTo: 'Dr. Leila Mansouri',
+        comments: [
+          {
+            id: '7',
+            author: 'Dr. Leila Mansouri',
+            content: 'Vérification des documents requis en cours.',
+            timestamp: new Date(Date.now() - 30 * 60 * 1000),
+            type: 'comment'
+          }
+        ],
+        ocrData: { 
+          numero: 'PROC-002', 
+          dateGregorienne: '13 février 2025',
+          organisme: 'CNRC',
+          delai: '5 jours ouvrables'
+        }
+      },
+      {
+        id: '13',
+        title: 'PROCÉDURE - Permis de construire individuel',
+        type: 'Procédure Urbanisme',
+        legalCategory: 'procedure',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 5 * 60 * 60 * 1000),
+        status: 'approved',
+        confidence: 91.2,
+        priority: 'low',
+        assignedTo: 'Dr. Yacine Brahim',
+        comments: [
+          {
+            id: '8',
+            author: 'Dr. Yacine Brahim',
+            content: 'Procédure conforme, autorisation accordée.',
+            timestamp: new Date(Date.now() - 90 * 60 * 1000),
+            type: 'approval'
+          }
+        ],
+        ocrData: { 
+          numero: 'PROC-003', 
+          dateGregorienne: '11 février 2025',
+          organisme: 'APC Oran',
+          delai: '30 jours ouvrables'
+        }
+      },
+      {
+        id: '14',
+        title: 'PROCÉDURE - Certificat de résidence',
+        type: 'Procédure Administrative',
+        legalCategory: 'procedure',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 7 * 60 * 60 * 1000),
+        status: 'needs_revision',
+        confidence: 87.4,
+        priority: 'medium',
+        assignedTo: 'Dr. Salim Kaced',
+        comments: [
+          {
+            id: '9',
+            author: 'Dr. Salim Kaced',
+            content: 'Adresse incomplète, vérification requise.',
+            timestamp: new Date(Date.now() - 120 * 60 * 1000),
+            type: 'revision_request'
+          }
+        ],
+        ocrData: { 
+          numero: 'PROC-004', 
+          dateGregorienne: '9 février 2025',
+          organisme: 'Commune de Constantine',
+          delai: '3 jours ouvrables'
+        }
+      },
+      {
+        id: '15',
+        title: 'PROCÉDURE - Demande de carte d\'identité',
+        type: 'Procédure Identité',
+        legalCategory: 'procedure',
+        insertionType: 'manual',
+        submittedBy: 'Nadia Benali',
+        submissionDate: new Date(Date.now() - 9 * 60 * 60 * 1000),
+        status: 'rejected',
+        confidence: 100,
+        priority: 'high',
+        assignedTo: 'Dr. Fatima Cherif',
+        comments: [
+          {
+            id: '10',
+            author: 'Dr. Fatima Cherif',
+            content: 'Documents d\'état civil manquants.',
+            timestamp: new Date(Date.now() - 180 * 60 * 1000),
+            type: 'rejection'
+          }
+        ],
+        ocrData: { 
+          numero: 'PROC-005', 
+          dateGregorienne: '7 février 2025',
+          organisme: 'Wilaya d\'Oran',
+          delai: '10 jours ouvrables'
+        }
+      },
+      {
+        id: '16',
+        title: 'PROCÉDURE - Acte de naissance en ligne',
+        type: 'Procédure État Civil',
+        legalCategory: 'procedure',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 10 * 60 * 60 * 1000),
+        status: 'pending',
+        confidence: 93.7,
+        priority: 'medium',
+        comments: [],
+        ocrData: { 
+          numero: 'PROC-006', 
+          dateGregorienne: '6 février 2025',
+          organisme: 'Commune d\'Alger',
+          delai: '2 jours ouvrables'
+        }
+      },
+      {
+        id: '17',
+        title: 'PROCÉDURE - Permis de conduire catégorie B',
+        type: 'Procédure Transport',
+        legalCategory: 'procedure',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 11 * 60 * 60 * 1000),
+        status: 'under_review',
+        confidence: 89.1,
+        priority: 'low',
+        assignedTo: 'Dr. Karim Meziane',
+        comments: [
+          {
+            id: '11',
+            author: 'Dr. Karim Meziane',
+            content: 'Vérification du dossier médical en cours.',
+            timestamp: new Date(Date.now() - 60 * 60 * 1000),
+            type: 'comment'
+          }
+        ],
+        ocrData: { 
+          numero: 'PROC-007', 
+          dateGregorienne: '5 février 2025',
+          organisme: 'Wilaya de Constantine',
+          delai: '20 jours ouvrables'
+        }
+      },
+      {
+        id: '18',
+        title: 'PROCÉDURE - Création d\'entreprise SARL',
+        type: 'Procédure Commerciale',
+        legalCategory: 'procedure',
+        insertionType: 'manual',
+        submittedBy: 'Mohamed Zerrouki',
+        submissionDate: new Date(Date.now() - 13 * 60 * 60 * 1000),
+        status: 'approved',
+        confidence: 100,
+        priority: 'medium',
+        assignedTo: 'Dr. Leila Mansouri',
+        comments: [
+          {
+            id: '12',
+            author: 'Dr. Leila Mansouri',
+            content: 'Dossier complet, immatriculation validée.',
+            timestamp: new Date(Date.now() - 150 * 60 * 1000),
+            type: 'approval'
+          }
+        ],
+        ocrData: { 
+          numero: 'PROC-008', 
+          dateGregorienne: '3 février 2025',
+          organisme: 'CNRC',
+          delai: '7 jours ouvrables'
+        }
+      },
       {
         id: '6',
         title: 'DÉCRET EXÉCUTIF N° 25-67 - Modernisation des Services Publics',
@@ -247,62 +454,17 @@ const ApprovalWorkflowComponent: React.FC = () => {
         title: 'CODE DE PROCÉDURE CIVILE - Amendements 2025',
         type: 'Code',
         legalCategory: 'code',
-        insertionType: 'manual',
-        submittedBy: 'Nadia Zeghiche',
-        submissionDate: new Date(Date.now() - 28 * 60 * 60 * 1000),
-        status: 'under_review',
-        confidence: 100,
-        priority: 'medium',
-        assignedTo: 'Dr. Mohamed Tabi',
-        comments: [
-          {
-            id: '7',
-            author: 'Dr. Mohamed Tabi',
-            content: 'Révision approfondie en cours, plusieurs amendements à valider.',
-            timestamp: new Date(Date.now() - 240 * 60 * 1000),
-            type: 'comment'
-          }
-        ],
-        ocrData: { numero: 'CPC-2025', dateGregorienne: '28 janvier 2025' }
-      },
-      {
-        id: '11',
-        title: 'DÉCRET EXÉCUTIF N° 25-78 - Digitalisation Administrative',
-        type: 'Décret Exécutif',
-        legalCategory: 'decret',
         insertionType: 'ocr',
         submittedBy: 'Service OCR Automatique',
-        submissionDate: new Date(Date.now() - 32 * 60 * 60 * 1000),
+        submissionDate: new Date(Date.now() - 26 * 60 * 60 * 1000),
         status: 'pending',
-        confidence: 91.8,
+        confidence: 82.1,
         priority: 'medium',
         comments: [],
-        ocrData: { numero: '25-78', dateGregorienne: '26 janvier 2025' }
-      },
-      {
-        id: '12',
-        title: 'LOI N° 25-05 - Économie Numérique et Start-ups',
-        type: 'Loi',
-        legalCategory: 'loi',
-        insertionType: 'manual',
-        submittedBy: 'Rachid Bensalem',
-        submissionDate: new Date(Date.now() - 36 * 60 * 60 * 1000),
-        status: 'approved',
-        confidence: 100,
-        priority: 'high',
-        assignedTo: 'Dr. Karima Djaout',
-        comments: [
-          {
-            id: '8',
-            author: 'Dr. Karima Djaout',
-            content: 'Excellent travail, loi approuvée sans réserve.',
-            timestamp: new Date(Date.now() - 300 * 60 * 1000),
-            type: 'approval'
-          }
-        ],
-        ocrData: { numero: '25-05', dateGregorienne: '24 janvier 2025' }
+        ocrData: { numero: 'CPC-2025', dateGregorienne: '28 janvier 2025' }
       }
     ];
+
     setDocuments(mockDocuments);
   }, []);
 
@@ -313,7 +475,7 @@ const ApprovalWorkflowComponent: React.FC = () => {
     // Nouvelle logique pour le filtre "Type de document"
     const matchesType = typeFilter === 'all' || 
       (typeFilter === 'textes_juridiques' && ['loi', 'decret', 'arrete', 'ordonnance', 'code'].includes(doc.legalCategory)) ||
-      (typeFilter === 'procedures_administratives' && ['procedure'].includes(doc.legalCategory));
+      (typeFilter === 'procedures_administratives' && doc.legalCategory === 'procedure');
     const matchesInsertion = insertionFilter === 'all' || doc.insertionType === insertionFilter;
     return matchesSearch && matchesStatus && matchesType && matchesInsertion;
   });
