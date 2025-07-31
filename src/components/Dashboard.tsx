@@ -559,62 +559,63 @@ export function Dashboard({ language = "fr" }: DashboardProps) {
             </div>
           </CardContent>
         </Card>
+      </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bell className="w-5 h-5 text-red-600" />
-              {getText("recentAlerts")}
-            </CardTitle>
-            <CardDescription>Dernières notifications importantes</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {paginatedAlerts.map((alert) => (
-                <div key={alert.id} className={`p-3 rounded-lg border ${
-                  alert.read ? 'bg-gray-50 border-gray-200' : 'bg-blue-50 border-blue-200'
-                }`}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Badge variant={
-                          alert.type === 'urgent' ? 'destructive' :
-                          alert.type === 'important' ? 'default' : 'secondary'
-                        }>
-                          {alert.type === 'urgent' ? 'Urgent' :
-                           alert.type === 'important' ? 'Important' : 'Info'}
-                        </Badge>
-                        <Badge variant="outline">{alert.category}</Badge>
-                      </div>
-                      <h4 className="font-medium text-sm">{alert.title}</h4>
-                      <p className="text-xs text-gray-600 mt-1">{alert.description}</p>
-                      <p className="text-xs text-gray-500 mt-1">{alert.date}</p>
+      {/* Section Alertes récentes sur toute la largeur */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Bell className="w-5 h-5 text-red-600" />
+            {getText("recentAlerts")}
+          </CardTitle>
+          <CardDescription>Dernières notifications importantes</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* 3 colonnes responsives pour les alertes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {paginatedAlerts.map((alert) => (
+              <div key={alert.id} className={`p-3 rounded-lg border ${
+                alert.read ? 'bg-gray-50 border-gray-200' : 'bg-blue-50 border-blue-200'
+              }`}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge variant={
+                        alert.type === 'urgent' ? 'destructive' :
+                        alert.type === 'important' ? 'default' : 'secondary'
+                      }>
+                        {alert.type === 'urgent' ? 'Urgent' :
+                         alert.type === 'important' ? 'Important' : 'Info'}
+                      </Badge>
+                      <Badge variant="outline">{alert.category}</Badge>
                     </div>
-                    <div className="flex items-center gap-1">
-                      {!alert.read && <div className="w-2 h-2 bg-blue-600 rounded-full"></div>}
-                      <Button variant="ghost" size="sm">
-                        <Eye className="w-3 h-3" />
-                      </Button>
-                    </div>
+                    <h4 className="font-medium text-sm">{alert.title}</h4>
+                    <p className="text-xs text-gray-600 mt-1">{alert.description}</p>
+                    <p className="text-xs text-gray-500 mt-1">{alert.date}</p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {!alert.read && <div className="w-2 h-2 bg-blue-600 rounded-full"></div>}
+                    <Button variant="ghost" size="sm">
+                      <Eye className="w-3 h-3" />
+                    </Button>
                   </div>
                 </div>
-              ))}
-            </div>
-            
-            {/* Pagination pour les alertes */}
-            <div className="mt-4">
-              <Pagination
-                currentPage={alertsCurrentPage}
-                totalPages={alertsTotalPages}
-                totalItems={alertsTotalItems}
-                itemsPerPage={alertsItemsPerPage}
-                onPageChange={setAlertsCurrentPage}
-                onItemsPerPageChange={setAlertsItemsPerPage}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              </div>
+            ))}
+          </div>
+          {/* Pagination pour les alertes */}
+          <div className="mt-4">
+            <Pagination
+              currentPage={alertsCurrentPage}
+              totalPages={alertsTotalPages}
+              totalItems={alertsTotalItems}
+              itemsPerPage={alertsItemsPerPage}
+              onPageChange={setAlertsCurrentPage}
+              onItemsPerPageChange={setAlertsItemsPerPage}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <PersonalDashboard />
     </div>
