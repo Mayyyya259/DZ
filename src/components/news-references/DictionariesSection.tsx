@@ -93,6 +93,61 @@ export function DictionariesSection() {
     itemsPerPage: 10
   });
 
+  // Données pour Traductions Contextuelles
+  const contextTranslations = [
+    { id: 1, domain: 'Droit Civil', items: [
+      { fr: 'Succession', ar: 'ميراث (héritage) - توارث (transmission héréditaire)' },
+      { fr: 'Propriété', ar: 'ملكية (propriété) - حيازة (possession)' }
+    ] },
+    { id: 2, domain: 'Droit Pénal', items: [
+      { fr: 'Crime', ar: 'جريمة (crime) - جناية (crime grave)' },
+      { fr: 'Peine', ar: 'عقوبة (sanction) - جزاء (châtiment)' }
+    ] },
+    { id: 3, domain: 'Procédure', items: [
+      { fr: 'Appel', ar: 'استئناف (recours) - طعن (contestation)' },
+      { fr: 'Cassation', ar: 'نقض (annulation) - إبطال (invalidation)' }
+    ] },
+    { id: 4, domain: 'Expressions Courantes', items: [
+      { fr: 'En droit algérien', ar: 'في القانون الجزائري' },
+      { fr: 'Selon la jurisprudence', ar: 'حسب الاجتهاد القضائي' }
+    ] }
+  ];
+  // Pagination pour Traductions Contextuelles
+  const {
+    currentData: paginatedContextTranslations,
+    currentPage: contextCurrentPage,
+    totalPages: contextTotalPages,
+    itemsPerPage: contextItemsPerPage,
+    totalItems: contextTotalItems,
+    setCurrentPage: setContextCurrentPage,
+    setItemsPerPage: setContextItemsPerPage
+  } = usePagination({
+    data: contextTranslations,
+    itemsPerPage: 2
+  });
+
+  // Données pour Catégories Principales
+  const mainCategories = [
+    { id: 1, color: 'blue', label: 'Droit Civil', desc: 'Personnes, biens, obligations, contrats, famille', count: '2,800 termes' },
+    { id: 2, color: 'red', label: 'Droit Pénal', desc: 'Infractions, sanctions, procédure pénale', count: '1,900 termes' },
+    { id: 3, color: 'green', label: 'Droit Commercial', desc: 'Sociétés, commerce, fonds de commerce', count: '1,600 termes' },
+    { id: 4, color: 'yellow', label: 'Droit Constitutionnel', desc: 'Institutions, droits fondamentaux', count: '1,200 termes' },
+    { id: 5, color: 'purple', label: 'Droit Administratif', desc: 'Administration, contentieux, actes', count: '1,100 termes' }
+  ];
+  // Pagination pour Catégories Principales
+  const {
+    currentData: paginatedMainCategories,
+    currentPage: mainCatCurrentPage,
+    totalPages: mainCatTotalPages,
+    itemsPerPage: mainCatItemsPerPage,
+    totalItems: mainCatTotalItems,
+    setCurrentPage: setMainCatCurrentPage,
+    setItemsPerPage: setMainCatItemsPerPage
+  } = usePagination({
+    data: mainCategories,
+    itemsPerPage: 2
+  });
+
   return (
     <div className="space-y-6">
       <Tabs defaultValue="francais-arabe" className="w-full">
@@ -219,46 +274,25 @@ export function DictionariesSection() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="p-3 bg-green-50 rounded">
-                    <div className="font-medium text-sm text-green-800">Droit Civil</div>
-                    <div className="text-xs text-green-700 mt-1">
-                      <strong>Succession:</strong> ميراث (héritage) - توارث (transmission héréditaire)
+                  {paginatedContextTranslations.map((context) => (
+                    <div key={context.id} className={`p-3 bg-${context.domain === 'Droit Civil' ? 'green' : context.domain === 'Droit Pénal' ? 'red' : context.domain === 'Procédure' ? 'blue' : 'yellow'}-50 rounded`}>
+                      <div className={`font-medium text-sm text-${context.domain === 'Droit Civil' ? 'green' : context.domain === 'Droit Pénal' ? 'red' : context.domain === 'Procédure' ? 'blue' : 'yellow'}-800`}>{context.domain}</div>
+                      {context.items.map((item, idx) => (
+                        <div key={idx} className={`text-xs text-${context.domain === 'Droit Civil' ? 'green' : context.domain === 'Droit Pénal' ? 'red' : context.domain === 'Procédure' ? 'blue' : 'yellow'}-700 mt-1`}>
+                          <strong>{item.fr}:</strong> {item.ar}
+                        </div>
+                      ))}
                     </div>
-                    <div className="text-xs text-green-700">
-                      <strong>Propriété:</strong> ملكية (propriété) - حيازة (possession)
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 bg-red-50 rounded">
-                    <div className="font-medium text-sm text-red-800">Droit Pénal</div>
-                    <div className="text-xs text-red-700 mt-1">
-                      <strong>Crime:</strong> جريمة (crime) - جناية (crime grave)
-                    </div>
-                    <div className="text-xs text-red-700">
-                      <strong>Peine:</strong> عقوبة (sanction) - جزاء (châtiment)
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 bg-blue-50 rounded">
-                    <div className="font-medium text-sm text-blue-800">Procédure</div>
-                    <div className="text-xs text-blue-700 mt-1">
-                      <strong>Appel:</strong> استئناف (recours) - طعن (contestation)
-                    </div>
-                    <div className="text-xs text-blue-700">
-                      <strong>Cassation:</strong> نقض (annulation) - إبطال (invalidation)
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-yellow-50 rounded">
-                    <div className="font-medium text-sm text-yellow-800">Expressions Courantes</div>
-                    <div className="text-xs text-yellow-700 mt-1">
-                      <strong>"En droit algérien":</strong> في القانون الجزائري
-                    </div>
-                    <div className="text-xs text-yellow-700">
-                      <strong>"Selon la jurisprudence":</strong> حسب الاجتهاد القضائي
-                    </div>
-                  </div>
+                  ))}
                 </div>
+                <Pagination
+                  currentPage={contextCurrentPage}
+                  totalPages={contextTotalPages}
+                  totalItems={contextTotalItems}
+                  itemsPerPage={contextItemsPerPage}
+                  onPageChange={setContextCurrentPage}
+                  onItemsPerPageChange={setContextItemsPerPage}
+                />
               </CardContent>
             </Card>
           </div>
@@ -364,29 +398,29 @@ export function DictionariesSection() {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                    <Languages className="w-4 h-4 text-blue-600" />
+                    <Languages className="w-5 h-5 text-blue-600" />
                     Catégories Principales
                   </CardTitle>
                   <p className="text-xs text-gray-600">Organisation par domaine juridique</p>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="p-3 bg-blue-50 rounded">
-                      <div className="font-medium text-sm text-blue-700">Droit Civil</div>
-                      <p className="text-xs text-blue-600 mt-1">Personnes, biens, obligations, contrats, famille</p>
-                      <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded mt-1 inline-block">2,800 termes</span>
-                    </div>
-                    <div className="p-3 bg-red-50 rounded">
-                      <div className="font-medium text-sm text-red-700">Droit Pénal</div>
-                      <p className="text-xs text-red-600 mt-1">Infractions, sanctions, procédure pénale</p>
-                      <span className="text-xs bg-red-200 text-red-800 px-2 py-1 rounded mt-1 inline-block">1,900 termes</span>
-                    </div>
-                    <div className="p-3 bg-green-50 rounded">
-                      <div className="font-medium text-sm text-green-700">Droit Commercial</div>
-                      <p className="text-xs text-green-600 mt-1">Sociétés, commerce, fonds de commerce</p>
-                      <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded mt-1 inline-block">1,600 termes</span>
-                    </div>
+                    {paginatedMainCategories.map((cat) => (
+                      <div key={cat.id} className={`p-3 bg-${cat.color}-50 rounded`}>
+                        <div className={`font-medium text-sm text-${cat.color}-700`}>{cat.label}</div>
+                        <p className={`text-xs text-${cat.color}-600 mt-1`}>{cat.desc}</p>
+                        <span className={`text-xs bg-${cat.color}-200 text-${cat.color}-800 px-2 py-1 rounded mt-1 inline-block`}>{cat.count}</span>
+                      </div>
+                    ))}
                   </div>
+                  <Pagination
+                    currentPage={mainCatCurrentPage}
+                    totalPages={mainCatTotalPages}
+                    totalItems={mainCatTotalItems}
+                    itemsPerPage={mainCatItemsPerPage}
+                    onPageChange={setMainCatCurrentPage}
+                    onItemsPerPageChange={setMainCatItemsPerPage}
+                  />
                 </CardContent>
               </Card>
 
