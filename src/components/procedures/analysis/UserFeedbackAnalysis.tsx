@@ -127,7 +127,7 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
               </div>
               <p className="text-sm font-medium text-gray-600">Satisfaction Moyenne</p>
               <p className="text-2xl font-bold mt-2 text-green-600">
-                {procedures.reduce((acc, p) => acc + p.userSatisfaction, 0) / procedures.length.toFixed(1)}/5
+                {(procedures.reduce((acc, p) => acc + p.userSatisfaction, 0) / procedures.length).toFixed(1)}/5
               </p>
             </div>
           </CardContent>
