@@ -60,6 +60,42 @@ export function PredictiveDashboards() {
       trend: "↗",
       nextDeadline: "7 jours",
       color: "text-red-700"
+    },
+    {
+      domain: "Droit commercial",
+      riskLevel: "Moyen",
+      score: 80,
+      alerts: 8,
+      trend: "→",
+      nextDeadline: "20 jours",
+      color: "text-orange-600"
+    },
+    {
+      domain: "Droit administratif",
+      riskLevel: "Faible",
+      score: 90,
+      alerts: 3,
+      trend: "↘",
+      nextDeadline: "60 jours",
+      color: "text-green-600"
+    },
+    {
+      domain: "Droit numérique",
+      riskLevel: "Élevé",
+      score: 70,
+      alerts: 15,
+      trend: "↗",
+      nextDeadline: "10 jours",
+      color: "text-red-600"
+    },
+    {
+      domain: "Droit de la consommation",
+      riskLevel: "Moyen",
+      score: 82,
+      alerts: 6,
+      trend: "→",
+      nextDeadline: "25 jours",
+      color: "text-orange-600"
     }
   ];
 
@@ -87,6 +123,30 @@ export function PredictiveDashboards() {
       impact: "Moyen",
       source: "Législatif",
       timeframe: "12 derniers mois"
+    },
+    {
+      title: "Digitalisation des services",
+      category: "Droit administratif",
+      trend: "+34%",
+      impact: "Élevé",
+      source: "Législatif",
+      timeframe: "9 derniers mois"
+    },
+    {
+      title: "Cybersécurité",
+      category: "Droit numérique",
+      trend: "+56%",
+      impact: "Critique",
+      source: "Réglementaire",
+      timeframe: "4 derniers mois"
+    },
+    {
+      title: "Commerce électronique",
+      category: "Droit commercial",
+      trend: "+28%",
+      impact: "Moyen",
+      source: "Jurisprudence",
+      timeframe: "8 derniers mois"
     }
   ];
 
@@ -111,6 +171,27 @@ export function PredictiveDashboards() {
       criticalUpdates: 5,
       lastUpdate: "Il y a 1 heure",
       keyTopics: ["IA Act", "DMA", "DSA"]
+    },
+    {
+      sector: "Transport & Logistique",
+      changes: 12,
+      criticalUpdates: 2,
+      lastUpdate: "Il y a 3 heures",
+      keyTopics: ["Mobility Package", "Green Deal", "Digital Freight"]
+    },
+    {
+      sector: "Énergie & Utilities",
+      changes: 18,
+      criticalUpdates: 4,
+      lastUpdate: "Il y a 30 minutes",
+      keyTopics: ["Renewable Energy", "Grid Modernization", "Energy Efficiency"]
+    },
+    {
+      sector: "Retail & E-commerce",
+      changes: 25,
+      criticalUpdates: 6,
+      lastUpdate: "Il y a 15 minutes",
+      keyTopics: ["Digital Markets", "Consumer Rights", "Data Protection"]
     }
   ];
 
@@ -138,6 +219,30 @@ export function PredictiveDashboards() {
       deadline: "12 mois",
       preparationStatus: "Urgent",
       actions: 24
+    },
+    {
+      text: "Réforme du droit des contrats",
+      impactScore: 6.8,
+      affectedDomains: ["Commerce", "Services", "Consommation"],
+      deadline: "24 mois",
+      preparationStatus: "Planifié",
+      actions: 15
+    },
+    {
+      text: "Loi sur la protection des données personnelles",
+      impactScore: 9.3,
+      affectedDomains: ["Toutes entreprises", "IT", "Compliance"],
+      deadline: "3 mois",
+      preparationStatus: "Urgent",
+      actions: 30
+    },
+    {
+      text: "Directive sur la gouvernance d'entreprise",
+      impactScore: 7.5,
+      affectedDomains: ["Sociétés cotées", "Audit", "Transparence"],
+      deadline: "15 mois",
+      preparationStatus: "En cours",
+      actions: 18
     }
   ];
 

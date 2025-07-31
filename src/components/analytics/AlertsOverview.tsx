@@ -43,6 +43,60 @@ export function AlertsOverview() {
       date: '2024-01-10',
       status: 'pending',
       domain: 'Droit commercial'
+    },
+    {
+      id: 5,
+      type: 'warning',
+      title: 'Nouvelle loi sur la protection des données',
+      description: 'Loi n°2024-002 renforçant la protection RGPD',
+      date: '2024-01-09',
+      status: 'new',
+      domain: 'Protection des données'
+    },
+    {
+      id: 6,
+      type: 'info',
+      title: 'Modification du code de procédure civile',
+      description: 'Amendements apportés aux articles 15-25',
+      date: '2024-01-08',
+      status: 'processed',
+      domain: 'Procédure civile'
+    },
+    {
+      id: 7,
+      type: 'critical',
+      title: 'Arrêté sur les normes environnementales',
+      description: 'Nouvelles normes pour les entreprises industrielles',
+      date: '2024-01-07',
+      status: 'pending',
+      domain: 'Droit environnemental'
+    },
+    {
+      id: 8,
+      type: 'warning',
+      title: 'Décret sur la modernisation administrative',
+      description: 'Simplification des procédures administratives',
+      date: '2024-01-06',
+      status: 'new',
+      domain: 'Droit administratif'
+    },
+    {
+      id: 9,
+      type: 'info',
+      title: 'Jurisprudence sur les contrats commerciaux',
+      description: 'Cour suprême - Interprétation des clauses abusives',
+      date: '2024-01-05',
+      status: 'archived',
+      domain: 'Droit commercial'
+    },
+    {
+      id: 10,
+      type: 'critical',
+      title: 'Loi sur la cybersécurité',
+      description: 'Nouvelles obligations pour les entreprises numériques',
+      date: '2024-01-04',
+      status: 'new',
+      domain: 'Droit numérique'
     }
   ];
 
