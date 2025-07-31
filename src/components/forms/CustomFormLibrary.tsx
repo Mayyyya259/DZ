@@ -16,6 +16,8 @@ import {
   Calendar,
   User
 } from 'lucide-react';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 
 interface FormTemplate {
   id: string;
@@ -102,6 +104,50 @@ export function CustomFormLibrary() {
     return matchesSearch && matchesCategory;
   });
 
+  // Pagination pour les modèles
+  const {
+    currentData: paginatedTemplates,
+    currentPage: templatesCurrentPage,
+    totalPages: templatesTotalPages,
+    itemsPerPage: templatesItemsPerPage,
+    totalItems: templatesTotalItems,
+    setCurrentPage: setTemplatesCurrentPage,
+    setItemsPerPage: setTemplatesItemsPerPage
+  } = usePagination({
+    data: filteredTemplates,
+    itemsPerPage: 4
+  });
+
+  // Pagination pour les favoris
+  const favoriteTemplates = formTemplates.filter(t => t.isStarred);
+  const {
+    currentData: paginatedFavorites,
+    currentPage: favoritesCurrentPage,
+    totalPages: favoritesTotalPages,
+    itemsPerPage: favoritesItemsPerPage,
+    totalItems: favoritesTotalItems,
+    setCurrentPage: setFavoritesCurrentPage,
+    setItemsPerPage: setFavoritesItemsPerPage
+  } = usePagination({
+    data: favoriteTemplates,
+    itemsPerPage: 4
+  });
+
+  // Pagination pour les récents (ici, on prend les 5 derniers par date)
+  const recentTemplates = [...formTemplates].sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+  const {
+    currentData: paginatedRecents,
+    currentPage: recentsCurrentPage,
+    totalPages: recentsTotalPages,
+    itemsPerPage: recentsItemsPerPage,
+    totalItems: recentsTotalItems,
+    setCurrentPage: setRecentsCurrentPage,
+    setItemsPerPage: setRecentsItemsPerPage
+  } = usePagination({
+    data: recentTemplates,
+    itemsPerPage: 4
+  });
+
   const handleDownload = (template: FormTemplate) => {
     const fileName = `${template.title.toLowerCase().replace(/\s+/g, '_')}.pdf`;
     const content = `Modèle: ${template.title}\nDescription: ${template.description}\nCatégorie: ${template.category}`;
@@ -177,7 +223,7 @@ export function CustomFormLibrary() {
         </TabsList>
 
         <TabsContent value="templates" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {filteredTemplates.map((template) => (
+          {paginatedTemplates.map((template) => (
               <Card key={template.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="pt-6">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
@@ -247,21 +293,129 @@ export function CustomFormLibrary() {
                 </CardContent>
               </Card>
             ))}
+          <div className="col-span-full mt-4">
+            <Pagination
+              currentPage={templatesCurrentPage}
+              totalPages={templatesTotalPages}
+              totalItems={templatesTotalItems}
+              itemsPerPage={templatesItemsPerPage}
+              onPageChange={setTemplatesCurrentPage}
+              onItemsPerPageChange={setTemplatesItemsPerPage}
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value="favorites" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="col-span-full text-center py-8">
-            <Star className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Vos favoris</h3>
-            <p className="text-gray-600">Les modèles que vous avez marqués comme favoris apparaîtront ici</p>
+          {paginatedFavorites.length === 0 ? (
+            <div className="col-span-full text-center py-8">
+              <Star className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Vos favoris</h3>
+              <p className="text-gray-600">Les modèles que vous avez marqués comme favoris apparaîtront ici</p>
+            </div>
+          ) : (
+            paginatedFavorites.map((template) => (
+              <Card key={template.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-lg font-semibold truncate">{template.title}</h3>
+                        {template.isStarred && <Star className="w-4 h-4 text-yellow-500 fill-current flex-shrink-0" />}
+                      </div>
+                      <p className="text-gray-600 mb-3 line-clamp-2">{template.description}</p>
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <FileText className="w-4 h-4" />
+                          <span className="truncate">{template.category}</span>
+                        </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <User className="w-4 h-4" />
+                          <span className="truncate">{template.author}</span>
+                        </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Calendar className="w-4 h-4" />
+                          <span className="truncate">{template.createdDate}</span>
+                        </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Download className="w-4 h-4" />
+                          <span className="truncate">{template.downloads} téléchargements</span>
+                        </div>
+                        <Badge variant="secondary" className="flex-shrink-0">
+                          ⭐ {template.rating}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+          <div className="col-span-full mt-4">
+            <Pagination
+              currentPage={favoritesCurrentPage}
+              totalPages={favoritesTotalPages}
+              totalItems={favoritesTotalItems}
+              itemsPerPage={favoritesItemsPerPage}
+              onPageChange={setFavoritesCurrentPage}
+              onItemsPerPageChange={setFavoritesItemsPerPage}
+            />
           </div>
         </TabsContent>
 
         <TabsContent value="recent" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="col-span-full text-center py-8">
-            <Calendar className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Modèles récents</h3>
-            <p className="text-gray-600">Vos modèles consultés récemment apparaîtront ici</p>
+          {paginatedRecents.length === 0 ? (
+            <div className="col-span-full text-center py-8">
+              <Calendar className="w-12 h-12 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Modèles récents</h3>
+              <p className="text-gray-600">Vos modèles consultés récemment apparaîtront ici</p>
+            </div>
+          ) : (
+            paginatedRecents.map((template) => (
+              <Card key={template.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-lg font-semibold truncate">{template.title}</h3>
+                        {template.isStarred && <Star className="w-4 h-4 text-yellow-500 fill-current flex-shrink-0" />}
+                      </div>
+                      <p className="text-gray-600 mb-3 line-clamp-2">{template.description}</p>
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <FileText className="w-4 h-4" />
+                          <span className="truncate">{template.category}</span>
+                        </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <User className="w-4 h-4" />
+                          <span className="truncate">{template.author}</span>
+                        </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Calendar className="w-4 h-4" />
+                          <span className="truncate">{template.createdDate}</span>
+                        </div>
+                        <div className="flex items-center gap-1 flex-shrink-0">
+                          <Download className="w-4 h-4" />
+                          <span className="truncate">{template.downloads} téléchargements</span>
+                        </div>
+                        <Badge variant="secondary" className="flex-shrink-0">
+                          ⭐ {template.rating}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+          <div className="col-span-full mt-4">
+            <Pagination
+              currentPage={recentsCurrentPage}
+              totalPages={recentsTotalPages}
+              totalItems={recentsTotalItems}
+              itemsPerPage={recentsItemsPerPage}
+              onPageChange={setRecentsCurrentPage}
+              onItemsPerPageChange={setRecentsItemsPerPage}
+            />
           </div>
         </TabsContent>
       </Tabs>
