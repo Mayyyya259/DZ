@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Clock, 
   FileText, 
@@ -60,6 +62,20 @@ export function ProcedureComparisonTable({
     return { level: 'Très Élevée', color: 'text-red-600', bg: 'bg-red-50' };
   };
 
+  // Pagination pour la liste des procédures
+  const {
+    currentData: paginatedProcedures,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: procedures,
+    itemsPerPage: 8
+  });
+
   const comparedProcedures = procedures.filter(p => selectedProcedures.includes(p.id));
 
   return (
@@ -71,7 +87,7 @@ export function ProcedureComparisonTable({
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {procedures.map((procedure) => (
+            {paginatedProcedures.map((procedure) => (
               <div key={procedure.id} className="flex items-center space-x-3 p-3 border rounded-lg">
                 <Checkbox
                   checked={selectedProcedures.includes(procedure.id)}
@@ -90,6 +106,20 @@ export function ProcedureComparisonTable({
               </div>
             ))}
           </div>
+          
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                onItemsPerPageChange={setItemsPerPage}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

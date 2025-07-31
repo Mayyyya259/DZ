@@ -7,6 +7,9 @@ import { UserFeedbackAnalysis } from './analysis/UserFeedbackAnalysis';
 import { ProcedureDetailAnalysis } from './analysis/ProcedureDetailAnalysis';
 import { MetricsOverview } from './analysis/MetricsOverview';
 import { OverviewTab } from './analysis/OverviewTab';
+import { TemporalAnalysisTab } from './analysis/TemporalAnalysisTab';
+import { TopDocumentsTab } from './analysis/TopDocumentsTab';
+import { PredictionsTab } from './analysis/PredictionsTab';
 import { ProcedureSimplificationSection } from './analysis/ProcedureSimplificationSection';
 import { mockProcedures } from './analysis/mockData';
 import { calculateAverageMetrics } from './analysis/utils';
@@ -31,12 +34,15 @@ export function ProcedureAnalysisTab() {
 
       {/* Onglets d'analyse */}
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
           <TabsTrigger value="procedure">Procédure</TabsTrigger>
           <TabsTrigger value="comparison">Comparaison</TabsTrigger>
           <TabsTrigger value="recommendations">Recommandations</TabsTrigger>
           <TabsTrigger value="feedback">Feedback Utilisateurs</TabsTrigger>
+          <TabsTrigger value="temporal">Analyse Temporelle</TabsTrigger>
+          <TabsTrigger value="topdocs">Top Documents</TabsTrigger>
+          <TabsTrigger value="predictions">Prédictions</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -62,6 +68,18 @@ export function ProcedureAnalysisTab() {
 
         <TabsContent value="feedback" className="space-y-6">
           <UserFeedbackAnalysis procedures={mockProcedures} />
+        </TabsContent>
+
+        <TabsContent value="temporal" className="space-y-6">
+          <TemporalAnalysisTab procedures={mockProcedures} />
+        </TabsContent>
+
+        <TabsContent value="topdocs" className="space-y-6">
+          <TopDocumentsTab procedures={mockProcedures} />
+        </TabsContent>
+
+        <TabsContent value="predictions" className="space-y-6">
+          <PredictionsTab procedures={mockProcedures} />
         </TabsContent>
       </Tabs>
     </div>

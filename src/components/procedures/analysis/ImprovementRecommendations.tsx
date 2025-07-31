@@ -2,6 +2,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Lightbulb, 
   Clock, 
@@ -142,6 +144,20 @@ export function ImprovementRecommendations({ procedures }: ImprovementRecommenda
   };
 
   const recommendations = generateRecommendations(procedures);
+  
+  // Pagination pour les recommandations
+  const {
+    currentData: paginatedRecommendations,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: recommendations,
+    itemsPerPage: 5
+  });
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -234,7 +250,7 @@ export function ImprovementRecommendations({ procedures }: ImprovementRecommenda
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {recommendations.map((recommendation) => {
+            {paginatedRecommendations.map((recommendation) => {
               const TypeIcon = getTypeIcon(recommendation.type);
               const effort = getEffortBadge(recommendation.effort);
               
@@ -276,6 +292,20 @@ export function ImprovementRecommendations({ procedures }: ImprovementRecommenda
               );
             })}
           </div>
+          
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                onItemsPerPageChange={setItemsPerPage}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
