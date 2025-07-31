@@ -52,7 +52,9 @@ export function Dashboard({ language = "fr" }: DashboardProps) {
         recentTexts: "Textes récents",
         recentAlerts: "Alertes récentes",
         topSearches: "Recherches populaires",
-        monthlyTrends: "Tendances mensuelles"
+        monthlyTrends: "Tendances mensuelles",
+        consultationsEvolution: "Évolution des consultations",
+        contentDistribution: "Répartition des contenus"
       },
       ar: {
         welcome: "مرحباً بكم في dalil.dz",
