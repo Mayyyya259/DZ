@@ -2,12 +2,26 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { History, Brain, BarChart3, Sparkles } from 'lucide-react';
 
-const recentSearches = [
+const extendedRecentSearches = [
   { query: "Procédure de divorce", time: "Il y a 2 heures", results: 15 },
   { query: "Code du commerce article 544", time: "Hier", results: 8 },
-  { query: "Loi sur l'investissement 2023", time: "Il y a 2 jours", results: 23 }
+  { query: "Loi sur l'investissement 2023", time: "Il y a 2 jours", results: 23 },
+  { query: "Droit de la propriété intellectuelle", time: "Il y a 3 jours", results: 12 },
+  { query: "Procédure administrative contentieuse", time: "Il y a 4 jours", results: 19 },
+  { query: "Code pénal infractions économiques", time: "Il y a 5 jours", results: 31 },
+  { query: "Droit du travail licenciement", time: "Il y a 6 jours", results: 27 },
+  { query: "Loi sur les marchés publics", time: "Il y a 1 semaine", results: 14 },
+  { query: "Droit fiscal entreprises", time: "Il y a 1 semaine", results: 22 },
+  { query: "Code civil responsabilité civile", time: "Il y a 1 semaine", results: 18 },
+  { query: "Jurisprudence Cour suprême", time: "Il y a 2 semaines", results: 35 },
+  { query: "Droit constitutionnel contrôle", time: "Il y a 2 semaines", results: 11 },
+  { query: "Procédure pénale instruction", time: "Il y a 2 semaines", results: 16 },
+  { query: "Droit commercial sociétés", time: "Il y a 2 semaines", results: 24 },
+  { query: "Loi sur la protection des données", time: "Il y a 3 semaines", results: 29 }
 ];
 
 const insights = [
@@ -24,6 +38,20 @@ const insights = [
 ];
 
 export function AIInsightsAndHistory() {
+  // Pagination pour les recherches récentes
+  const {
+    currentData: paginatedSearches,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: extendedRecentSearches,
+    itemsPerPage: 6
+  });
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card>
@@ -34,7 +62,7 @@ export function AIInsightsAndHistory() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {recentSearches.map((search, index) => (
+          {paginatedSearches.map((search, index) => (
             <div key={index} className="space-y-2">
               <div className="font-medium text-sm cursor-pointer hover:text-green-600">
                 {search.query}
@@ -47,6 +75,20 @@ export function AIInsightsAndHistory() {
               </div>
             </div>
           ))}
+          
+          {/* Pagination pour les recherches récentes */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                onItemsPerPageChange={setItemsPerPage}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

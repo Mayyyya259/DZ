@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { buttonHandlers } from '@/utils/buttonUtils';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Search, 
   Globe, 
@@ -37,7 +39,7 @@ export function UniversalSearch() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const sampleResults: SearchResult[] = [
+  const extendedSampleResults: SearchResult[] = [
     {
       id: '1',
       title: 'Code civil algérien - Article 674',
@@ -87,8 +89,122 @@ export function UniversalSearch() {
       relevance: 78,
       date: '2024-01-20',
       category: 'Formation'
+    },
+    {
+      id: '6',
+      title: 'Loi sur la protection des données personnelles',
+      content: 'Réglementation complète de la protection des données personnelles en Algérie...',
+      type: 'legislation',
+      source: 'Législation',
+      relevance: 93,
+      date: '2024-01-11',
+      category: 'Droit numérique'
+    },
+    {
+      id: '7',
+      title: 'Procédure de création d\'entreprise',
+      content: 'Guide complet pour créer une entreprise en Algérie, étapes et documents requis...',
+      type: 'procedure',
+      source: 'Procédures',
+      relevance: 91,
+      date: '2024-01-10',
+      category: 'Entreprise'
+    },
+    {
+      id: '8',
+      title: 'Jurisprudence - Droit du travail',
+      content: 'Arrêt de la Cour suprême sur les licenciements pour motif économique...',
+      type: 'jurisprudence',
+      source: 'Jurisprudence',
+      relevance: 85,
+      date: '2024-01-09',
+      category: 'Droit du travail'
+    },
+    {
+      id: '9',
+      title: 'Mme Fatima Cherif - Notaire',
+      content: 'Notaire spécialisée en droit immobilier et successions, étude à Oran...',
+      type: 'contact',
+      source: 'Annuaire',
+      relevance: 79,
+      date: '2024-01-08',
+      category: 'Professionnels'
+    },
+    {
+      id: '10',
+      title: 'Séminaire sur la réforme fiscale',
+      content: 'Présentation des nouvelles dispositions fiscales pour les entreprises...',
+      type: 'event',
+      source: 'Événements',
+      relevance: 76,
+      date: '2024-01-25',
+      category: 'Formation'
+    },
+    {
+      id: '11',
+      title: 'Code de commerce - Articles 15-25',
+      content: 'Dispositions relatives aux sociétés commerciales et leur constitution...',
+      type: 'legislation',
+      source: 'Législation',
+      relevance: 88,
+      date: '2024-01-07',
+      category: 'Droit commercial'
+    },
+    {
+      id: '12',
+      title: 'Procédure de divorce par consentement mutuel',
+      content: 'Étapes détaillées pour un divorce amiable devant le juge de paix...',
+      type: 'procedure',
+      source: 'Procédures',
+      relevance: 84,
+      date: '2024-01-06',
+      category: 'Droit de la famille'
+    },
+    {
+      id: '13',
+      title: 'Arrêt - Droit administratif',
+      content: 'Décision du Conseil d\'État sur le recours pour excès de pouvoir...',
+      type: 'jurisprudence',
+      source: 'Jurisprudence',
+      relevance: 83,
+      date: '2024-01-05',
+      category: 'Droit administratif'
+    },
+    {
+      id: '14',
+      title: 'Dr. Karim Meziane - Huissier',
+      content: 'Huissier de justice spécialisé en recouvrement et exécution forcée...',
+      type: 'contact',
+      source: 'Annuaire',
+      relevance: 77,
+      date: '2024-01-04',
+      category: 'Professionnels'
+    },
+    {
+      id: '15',
+      title: 'Colloque sur la justice numérique',
+      content: 'Débats sur la digitalisation de la justice et ses enjeux...',
+      type: 'event',
+      source: 'Événements',
+      relevance: 74,
+      date: '2024-01-30',
+      category: 'Innovation'
     }
   ];
+
+  // Pagination pour les résultats de recherche
+  const {
+    currentData: paginatedResults,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: extendedSampleResults,
+    itemsPerPage: 5
+  });
 
   const filters = [
     { id: 'all', label: 'Tout', icon: Globe, count: 2847 },
@@ -103,10 +219,9 @@ export function UniversalSearch() {
     if (!searchQuery.trim()) return;
     
     setIsSearching(true);
-    
-    // Simulation de recherche universelle
+    // Simulation d'une recherche
     setTimeout(() => {
-      setResults(sampleResults);
+      setResults(extendedSampleResults);
       setIsSearching(false);
     }, 1500);
   };
@@ -141,9 +256,10 @@ export function UniversalSearch() {
     return 'text-red-600';
   };
 
-  const filteredResults = activeFilter === 'all' 
-    ? results 
-    : results.filter(result => result.type === activeFilter);
+  // Filtrer les résultats selon le filtre actif
+  const filteredResults = paginatedResults.filter(result => 
+    activeFilter === 'all' || result.type === activeFilter
+  );
 
   return (
     <div className="space-y-6">
@@ -300,28 +416,36 @@ export function UniversalSearch() {
                       <Badge variant="outline" className="text-xs">
                         {result.category}
                       </Badge>
-                      <span>Date: {result.date}</span>
+                      <span>{result.date}</span>
                     </div>
                     <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={buttonHandlers.viewDocument(result.id.toString(), result.title, 'résultat')}
-                      >
+                      <Button variant="outline" size="sm">
+                        <FileText className="w-3 h-3 mr-1" />
                         Voir
                       </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={buttonHandlers.shareDocument(result.id.toString(), result.title)}
-                      >
-                        Partager
+                      <Button variant="outline" size="sm">
+                        <Database className="w-3 h-3 mr-1" />
+                        Détails
                       </Button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+            
+            {/* Pagination pour les résultats */}
+            {totalPages > 1 && (
+              <div className="mt-6">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
       )}

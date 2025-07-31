@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Search, 
   Database, 
@@ -31,29 +33,8 @@ export function VectorSearch() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  // Fonction de recherche vectorielle réelle
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
-    
-    setIsSearching(true);
-    try {
-      // Simulation d'une vraie recherche vectorielle
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Résultats simulés de recherche vectorielle
-      const results = [
-        { id: 1, title: 'Document juridique similaire 1', similarity: 0.95 },
-        { id: 2, title: 'Document juridique similaire 2', similarity: 0.87 },
-        { id: 3, title: 'Document juridique similaire 3', similarity: 0.82 }
-      ];
-      
-      setSearchResults(results);
-    } finally {
-      setIsSearching(false);
-    }
-  };
-
-  const sampleResults: SearchResult[] = [
+  // Données étendues pour les résultats de recherche
+  const extendedSampleResults: SearchResult[] = [
     {
       id: '1',
       title: 'Code civil algérien - Article 674',
@@ -80,8 +61,125 @@ export function VectorSearch() {
       type: 'Législation',
       source: 'Loi 90-25',
       relevance: 84
+    },
+    {
+      id: '4',
+      title: 'Décret exécutif sur la propriété commerciale',
+      similarity: 0.91,
+      content: 'Réglementation des baux commerciaux et protection du locataire...',
+      type: 'Législation',
+      source: 'Décret 2023-45',
+      relevance: 92
+    },
+    {
+      id: '5',
+      title: 'Jurisprudence - Droit des contrats',
+      similarity: 0.88,
+      content: 'Interprétation des clauses contractuelles et responsabilité...',
+      type: 'Jurisprudence',
+      source: 'Cour d\'appel d\'Alger',
+      relevance: 87
+    },
+    {
+      id: '6',
+      title: 'Code de commerce - Articles 15-25',
+      similarity: 0.85,
+      content: 'Dispositions relatives aux sociétés commerciales...',
+      type: 'Législation',
+      source: 'Code de commerce',
+      relevance: 86
+    },
+    {
+      id: '7',
+      title: 'Doctrine - Responsabilité civile',
+      similarity: 0.79,
+      content: 'Analyse doctrinale des fondements de la responsabilité...',
+      type: 'Doctrine',
+      source: 'Revue juridique algérienne',
+      relevance: 81
+    },
+    {
+      id: '8',
+      title: 'Loi sur la protection des données',
+      similarity: 0.93,
+      content: 'Réglementation de la protection des données personnelles...',
+      type: 'Législation',
+      source: 'Loi 2024-12',
+      relevance: 94
+    },
+    {
+      id: '9',
+      title: 'Arrêt - Droit administratif',
+      similarity: 0.86,
+      content: 'Contrôle de légalité des actes administratifs...',
+      type: 'Jurisprudence',
+      source: 'Conseil d\'État',
+      relevance: 88
+    },
+    {
+      id: '10',
+      title: 'Code pénal - Infractions économiques',
+      similarity: 0.83,
+      content: 'Répression des infractions économiques et financières...',
+      type: 'Législation',
+      source: 'Code pénal',
+      relevance: 85
+    },
+    {
+      id: '11',
+      title: 'Doctrine - Droit constitutionnel',
+      similarity: 0.77,
+      content: 'Étude sur la hiérarchie des normes constitutionnelles...',
+      type: 'Doctrine',
+      source: 'Cahiers constitutionnels',
+      relevance: 79
+    },
+    {
+      id: '12',
+      title: 'Loi sur les marchés publics',
+      similarity: 0.90,
+      content: 'Réglementation des procédures de passation des marchés...',
+      type: 'Législation',
+      source: 'Loi 2023-78',
+      relevance: 91
     }
   ];
+
+  // Pagination pour les résultats de recherche
+  const {
+    currentData: paginatedResults,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: extendedSampleResults,
+    itemsPerPage: 4
+  });
+
+  // Fonction de recherche vectorielle réelle
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    
+    setIsSearching(true);
+    try {
+      // Simulation d'une vraie recherche vectorielle
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Résultats simulés de recherche vectorielle
+      const results = [
+        { id: 1, title: 'Document juridique similaire 1', similarity: 0.95 },
+        { id: 2, title: 'Document juridique similaire 2', similarity: 0.87 },
+        { id: 3, title: 'Document juridique similaire 3', similarity: 0.82 }
+      ];
+      
+      setSearchResults(results);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   const getSimilarityColor = (similarity: number) => {
     if (similarity >= 0.9) return 'text-green-600';
@@ -146,13 +244,16 @@ export function VectorSearch() {
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="Recherche par similarité sémantique..."
+                placeholder="Entrez votre requête de recherche vectorielle..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                className="flex-1 border border-gray-300 rounded-md px-3 py-2"
               />
-              <Button onClick={handleSearch} disabled={isSearching}>
+              <Button 
+                onClick={handleSearch}
+                disabled={isSearching}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
                 {isSearching ? (
                   <>
                     <Activity className="w-4 h-4 mr-2 animate-spin" />
@@ -166,41 +267,37 @@ export function VectorSearch() {
                 )}
               </Button>
             </div>
-
-            {isSearching && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Analyse vectorielle en cours...</span>
-                  <span className="text-sm text-gray-500">Traitement des embeddings</span>
-                </div>
-                <Progress value={60} className="w-full" />
-              </div>
-            )}
+            
+            <div className="text-sm text-gray-600">
+              Recherche sémantique basée sur les embeddings vectoriels et l'IA
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Résultats */}
-      {searchResults.length > 0 && (
+      {/* Résultats de recherche vectorielle */}
+      {paginatedResults.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-purple-600" />
+              <Target className="w-5 h-5 text-green-600" />
               Résultats de Recherche Vectorielle
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {searchResults.map((result) => (
+              {paginatedResults.map((result) => (
                 <div key={result.id} className="border rounded-lg p-4 hover:bg-gray-50">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">{result.title}</h3>
-                    <div className="flex items-center gap-2">
-                      <Badge className={getTypeColor(result.type)}>
-                        {result.type}
-                      </Badge>
-                      <div className={`text-sm font-bold ${getSimilarityColor(result.similarity)}`}>
-                        {(result.similarity * 100).toFixed(1)}%
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-lg mb-2">{result.title}</h4>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Badge className={getTypeColor(result.type)}>
+                          {result.type}
+                        </Badge>
+                        <div className={`text-sm font-bold ${getSimilarityColor(result.similarity)}`}>
+                          {(result.similarity * 100).toFixed(1)}%
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -221,6 +318,20 @@ export function VectorSearch() {
                 </div>
               ))}
             </div>
+            
+            {/* Pagination pour les résultats */}
+            {totalPages > 1 && (
+              <div className="mt-6">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  totalItems={totalItems}
+                  itemsPerPage={itemsPerPage}
+                  onPageChange={setCurrentPage}
+                  onItemsPerPageChange={setItemsPerPage}
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
