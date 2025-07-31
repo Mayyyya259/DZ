@@ -5,7 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Bot, Sparkles, FileText, FileSpreadsheet, FileImage } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
+import { Bot, Sparkles, FileText, FileSpreadsheet, FileImage, 
+  Download, 
+  Eye, 
+  Trash2, 
+  Calendar,
+  User,
+  FileType,
+  Clock
+} from 'lucide-react';
 import { ReportGenerationModal } from '@/components/modals/ReportGenerationModal';
 
 export function CustomReportGeneration() {
@@ -13,6 +24,113 @@ export function CustomReportGeneration() {
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [showExcelModal, setShowExcelModal] = useState(false);
   const [showWordModal, setShowWordModal] = useState(false);
+
+  // Données pour les rapports récents
+  const recentReports = [
+    {
+      id: 1,
+      title: "Analyse des tendances législatives Q4 2024",
+      type: "PDF",
+      status: "Terminé",
+      generatedBy: "Dr. Ahmed Benali",
+      generatedAt: "2024-01-15 14:30",
+      size: "2.4 MB",
+      downloads: 23,
+      description: "Rapport complet sur l'évolution de la législation algérienne"
+    },
+    {
+      id: 2,
+      title: "Statistiques des procédures administratives",
+      type: "Excel",
+      status: "Terminé",
+      generatedBy: "Mme Fatima Cherif",
+      generatedAt: "2024-01-14 16:45",
+      size: "1.8 MB",
+      downloads: 15,
+      description: "Données statistiques sur les procédures administratives"
+    },
+    {
+      id: 3,
+      title: "Rapport de conformité RGPD",
+      type: "Word",
+      status: "En cours",
+      generatedBy: "Dr. Karim Meziane",
+      generatedAt: "2024-01-15 10:20",
+      size: "0.0 MB",
+      downloads: 0,
+      description: "Évaluation de la conformité aux normes RGPD"
+    },
+    {
+      id: 4,
+      title: "Analyse comparative des codes juridiques",
+      type: "PDF",
+      status: "Terminé",
+      generatedBy: "Prof. Leila Mansouri",
+      generatedAt: "2024-01-13 09:15",
+      size: "3.2 MB",
+      downloads: 31,
+      description: "Comparaison des différents codes juridiques algériens"
+    },
+    {
+      id: 5,
+      title: "Rapport d'activité mensuel - Décembre 2024",
+      type: "Excel",
+      status: "Terminé",
+      generatedBy: "Dr. Yacine Brahim",
+      generatedAt: "2024-01-12 11:30",
+      size: "1.5 MB",
+      downloads: 18,
+      description: "Résumé des activités juridiques du mois de décembre"
+    },
+    {
+      id: 6,
+      title: "Étude sur la jurisprudence récente",
+      type: "PDF",
+      status: "Terminé",
+      generatedBy: "M. Salim Kaced",
+      generatedAt: "2024-01-11 15:45",
+      size: "2.8 MB",
+      downloads: 27,
+      description: "Analyse des décisions de justice récentes"
+    },
+    {
+      id: 7,
+      title: "Rapport de sécurité informatique",
+      type: "Word",
+      status: "Terminé",
+      generatedBy: "Dr. Amina Bouaziz",
+      generatedAt: "2024-01-10 13:20",
+      size: "1.2 MB",
+      downloads: 12,
+      description: "Audit de sécurité des systèmes informatiques"
+    },
+    {
+      id: 8,
+      title: "Analyse des contrats commerciaux",
+      type: "PDF",
+      status: "Terminé",
+      generatedBy: "M. Kamel Boudiaf",
+      generatedAt: "2024-01-09 16:10",
+      size: "2.1 MB",
+      downloads: 19,
+      description: "Étude des clauses contractuelles commerciales"
+    }
+  ];
+
+  // Pagination pour les rapports récents
+  const {
+    currentData: paginatedReports,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: recentReports,
+    itemsPerPage: 4
+  });
+
   return (
     <div className="space-y-6">
       <Card>
@@ -152,6 +270,92 @@ export function CustomReportGeneration() {
               </div>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Rapports récents */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="w-5 h-5 text-green-600" />
+            Rapports Récents
+          </CardTitle>
+          <CardDescription>
+            Vos rapports générés récemment
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {paginatedReports.map((report) => (
+              <div key={report.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-sm mb-1">{report.title}</h4>
+                    <p className="text-xs text-gray-600 mb-2">{report.description}</p>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <User className="w-3 h-3" />
+                        <span>{report.generatedBy}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        <span>{report.generatedAt}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <FileType className="w-3 h-3" />
+                        <span>{report.size}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge className={`text-xs ${
+                      report.status === "Terminé" ? "bg-green-100 text-green-800" :
+                      "bg-yellow-100 text-yellow-800"
+                    }`}>
+                      {report.status}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {report.type}
+                    </Badge>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <Download className="w-3 h-3" />
+                    <span>{report.downloads} téléchargements</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">
+                      <Eye className="w-3 h-3 mr-1" />
+                      Voir
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Download className="w-3 h-3 mr-1" />
+                      Télécharger
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Pagination pour les rapports */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                onItemsPerPageChange={setItemsPerPage}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
 

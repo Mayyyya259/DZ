@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   BarChart3, 
   Brain, 
@@ -17,7 +19,11 @@ import {
   Gauge,
   PieChart,
   LineChart,
-  Settings
+  Settings,
+  Clock,
+  Users,
+  Zap,
+  Target
 } from 'lucide-react';
 import { TabFormField } from '@/components/common/TabFormField';
 
@@ -73,6 +79,104 @@ export function AIAnalyticsAdvanced() {
     { value: 'quarter', label: '3 derniers mois' },
     { value: 'year', label: '12 derniers mois' }
   ];
+
+  // Données pour les statistiques d'utilisation détaillées
+  const usageStats = [
+    {
+      id: 1,
+      model: "NLP - Traitement du langage",
+      requests: 1247,
+      successRate: 96.8,
+      avgResponseTime: "1.2s",
+      users: 89,
+      lastUsed: "Il y a 5 minutes",
+      status: "Actif"
+    },
+    {
+      id: 2,
+      model: "Classification automatique",
+      requests: 892,
+      successRate: 94.2,
+      avgResponseTime: "0.8s",
+      users: 67,
+      lastUsed: "Il y a 12 minutes",
+      status: "Actif"
+    },
+    {
+      id: 3,
+      model: "Extraction d'entités",
+      requests: 567,
+      successRate: 91.5,
+      avgResponseTime: "1.5s",
+      users: 45,
+      lastUsed: "Il y a 8 minutes",
+      status: "Actif"
+    },
+    {
+      id: 4,
+      model: "Analyse de sentiment",
+      requests: 423,
+      successRate: 88.7,
+      avgResponseTime: "2.1s",
+      users: 34,
+      lastUsed: "Il y a 15 minutes",
+      status: "En cours"
+    },
+    {
+      id: 5,
+      model: "Résumé automatique",
+      requests: 298,
+      successRate: 93.1,
+      avgResponseTime: "3.2s",
+      users: 28,
+      lastUsed: "Il y a 22 minutes",
+      status: "Actif"
+    },
+    {
+      id: 6,
+      model: "Traduction juridique",
+      requests: 156,
+      successRate: 89.4,
+      avgResponseTime: "4.5s",
+      users: 19,
+      lastUsed: "Il y a 35 minutes",
+      status: "Actif"
+    },
+    {
+      id: 7,
+      model: "Prédiction de jurisprudence",
+      requests: 89,
+      successRate: 85.2,
+      avgResponseTime: "5.8s",
+      users: 12,
+      lastUsed: "Il y a 1 heure",
+      status: "Test"
+    },
+    {
+      id: 8,
+      model: "Analyse de conformité",
+      requests: 234,
+      successRate: 92.7,
+      avgResponseTime: "2.3s",
+      users: 31,
+      lastUsed: "Il y a 18 minutes",
+      status: "Actif"
+    }
+  ];
+
+  // Pagination pour les statistiques d'utilisation
+  const {
+    currentData: paginatedUsageStats,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: usageStats,
+    itemsPerPage: 4
+  });
 
   return (
     <div className="space-y-6">
@@ -268,8 +372,60 @@ export function AIAnalyticsAdvanced() {
                   <p className="text-sm text-gray-600">Taux de succès</p>
                 </div>
               </div>
-              <div className="mt-6 h-32 flex items-center justify-center border rounded-lg bg-gray-50">
-                <p className="text-gray-500">Graphique d'utilisation temporelle</p>
+              <div className="mt-6">
+                <h4 className="font-semibold mb-4">Détail par modèle</h4>
+                <div className="space-y-3">
+                  {paginatedUsageStats.map((stat) => (
+                    <div key={stat.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h5 className="font-medium text-sm">{stat.model}</h5>
+                          <p className="text-xs text-gray-600">{stat.lastUsed}</p>
+                        </div>
+                        <Badge className={`text-xs ${
+                          stat.status === "Actif" ? "bg-green-100 text-green-800" :
+                          stat.status === "En cours" ? "bg-yellow-100 text-yellow-800" :
+                          "bg-blue-100 text-blue-800"
+                        }`}>
+                          {stat.status}
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                        <div>
+                          <span className="text-gray-500">Requêtes:</span>
+                          <div className="font-medium">{stat.requests}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Succès:</span>
+                          <div className="font-medium">{stat.successRate}%</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Temps:</span>
+                          <div className="font-medium">{stat.avgResponseTime}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Utilisateurs:</span>
+                          <div className="font-medium">{stat.users}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Pagination pour les statistiques */}
+                {totalPages > 1 && (
+                  <div className="mt-6">
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      totalItems={totalItems}
+                      itemsPerPage={itemsPerPage}
+                      onPageChange={setCurrentPage}
+                      onItemsPerPageChange={setItemsPerPage}
+                    />
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
