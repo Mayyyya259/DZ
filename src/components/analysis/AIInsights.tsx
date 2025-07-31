@@ -2,6 +2,8 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Sparkles, 
   Bot, 
@@ -30,8 +32,40 @@ export function AIInsights() {
       description: "Générer automatiquement les rapports récurrents",
       priority: "Moyenne",
       impact: "Élevé"
+    },
+    {
+      title: "Améliorer l'interface utilisateur",
+      description: "Optimiser l'expérience utilisateur basée sur les retours",
+      priority: "Basse",
+      impact: "Moyen"
+    },
+    {
+      title: "Renforcer la sécurité des données",
+      description: "Implémenter des mesures de sécurité supplémentaires",
+      priority: "Haute",
+      impact: "Élevé"
+    },
+    {
+      title: "Formation continue des utilisateurs",
+      description: "Mettre en place un programme de formation régulier",
+      priority: "Moyenne",
+      impact: "Moyen"
     }
   ];
+
+  // Pagination pour les actions recommandées
+  const {
+    currentData: paginatedActions,
+    currentPage: actionsCurrentPage,
+    totalPages: actionsTotalPages,
+    itemsPerPage: actionsItemsPerPage,
+    totalItems: actionsTotalItems,
+    setCurrentPage: setActionsCurrentPage,
+    setItemsPerPage: setActionsItemsPerPage
+  } = usePagination({
+    data: actions,
+    itemsPerPage: 3
+  });
 
   return (
     <div className="space-y-6">
@@ -110,7 +144,7 @@ export function AIInsights() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {actions.map((action, index) => (
+              {paginatedActions.map((action, index) => (
                 <div key={index} className="border rounded-lg p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -142,6 +176,17 @@ export function AIInsights() {
                   </div>
                 </div>
               ))}
+              {/* Pagination pour les actions recommandées */}
+              <div className="mt-4">
+                <Pagination
+                  currentPage={actionsCurrentPage}
+                  totalPages={actionsTotalPages}
+                  totalItems={actionsTotalItems}
+                  itemsPerPage={actionsItemsPerPage}
+                  onPageChange={setActionsCurrentPage}
+                  onItemsPerPageChange={setActionsItemsPerPage}
+                />
+              </div>
             </CardContent>
           </Card>
         </CardContent>
