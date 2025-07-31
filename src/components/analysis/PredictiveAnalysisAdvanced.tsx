@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   TrendingUp, 
   Brain, 
@@ -15,7 +17,12 @@ import {
   Zap,
   LineChart,
   Target,
-  AlertTriangle
+  AlertTriangle,
+  TrendingDown,
+  Clock,
+  Eye,
+  ArrowUpRight,
+  ArrowDownRight
 } from 'lucide-react';
 import { TabFormField } from '@/components/common/TabFormField';
 
@@ -71,6 +78,120 @@ export function PredictiveAnalysisAdvanced() {
     { value: 'quarter', label: '3 derniers mois' },
     { value: 'year', label: '12 derniers mois' }
   ];
+
+  // Données pour les tendances prédictives
+  const predictiveTrends = [
+    {
+      id: 1,
+      title: "Évolution du télétravail",
+      category: "Droit du travail",
+      currentTrend: "+45%",
+      predictedTrend: "+67%",
+      confidence: 92,
+      timeframe: "6 mois",
+      impact: "Élevé",
+      description: "Augmentation continue des litiges liés au télétravail",
+      status: "En hausse"
+    },
+    {
+      id: 2,
+      title: "Réglementation RGPD",
+      category: "Protection des données",
+      currentTrend: "+23%",
+      predictedTrend: "+38%",
+      confidence: 88,
+      timeframe: "12 mois",
+      impact: "Critique",
+      description: "Renforcement des sanctions et nouvelles obligations",
+      status: "En hausse"
+    },
+    {
+      id: 3,
+      title: "Transition énergétique",
+      category: "Droit environnemental",
+      currentTrend: "+67%",
+      predictedTrend: "+89%",
+      confidence: 95,
+      timeframe: "18 mois",
+      impact: "Moyen",
+      description: "Nouvelles normes environnementales pour les entreprises",
+      status: "En hausse"
+    },
+    {
+      id: 4,
+      title: "Digitalisation des services",
+      category: "Droit administratif",
+      currentTrend: "+34%",
+      predictedTrend: "+52%",
+      confidence: 87,
+      timeframe: "9 mois",
+      impact: "Élevé",
+      description: "Transformation numérique des procédures administratives",
+      status: "En hausse"
+    },
+    {
+      id: 5,
+      title: "Cybersécurité",
+      category: "Droit numérique",
+      currentTrend: "+56%",
+      predictedTrend: "+78%",
+      confidence: 91,
+      timeframe: "4 mois",
+      impact: "Critique",
+      description: "Nouvelles obligations de sécurité pour les entreprises",
+      status: "En hausse"
+    },
+    {
+      id: 6,
+      title: "Commerce électronique",
+      category: "Droit commercial",
+      currentTrend: "+28%",
+      predictedTrend: "+41%",
+      confidence: 85,
+      timeframe: "8 mois",
+      impact: "Moyen",
+      description: "Évolution des contrats en ligne et protection consommateur",
+      status: "En hausse"
+    },
+    {
+      id: 7,
+      title: "Droit de la famille",
+      category: "Droit civil",
+      currentTrend: "-12%",
+      predictedTrend: "-8%",
+      confidence: 76,
+      timeframe: "12 mois",
+      impact: "Faible",
+      description: "Stabilisation des contentieux familiaux",
+      status: "En baisse"
+    },
+    {
+      id: 8,
+      title: "Droit des contrats",
+      category: "Droit civil",
+      currentTrend: "+18%",
+      predictedTrend: "+25%",
+      confidence: 82,
+      timeframe: "6 mois",
+      impact: "Moyen",
+      description: "Modernisation du droit des contrats",
+      status: "En hausse"
+    }
+  ];
+
+  // Pagination pour les tendances prédictives
+  const {
+    currentData: paginatedTrends,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: predictiveTrends,
+    itemsPerPage: 4
+  });
 
   return (
     <div className="space-y-6">
@@ -215,9 +336,86 @@ export function PredictiveAnalysisAdvanced() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-64 flex items-center justify-center border rounded-lg bg-gray-50">
-                <p className="text-gray-500">Graphique des tendances prédictives</p>
+              <div className="space-y-4">
+                {paginatedTrends.map((trend) => (
+                  <div key={trend.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-sm mb-1">{trend.title}</h4>
+                        <Badge variant="outline" className="text-xs mb-2">{trend.category}</Badge>
+                        <p className="text-xs text-gray-600">{trend.description}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="flex items-center gap-1 mb-1">
+                          {trend.status === "En hausse" ? (
+                            <ArrowUpRight className="w-4 h-4 text-green-600" />
+                          ) : (
+                            <ArrowDownRight className="w-4 h-4 text-red-600" />
+                          )}
+                          <Badge className={`text-xs ${
+                            trend.status === "En hausse" 
+                              ? "bg-green-100 text-green-800" 
+                              : "bg-red-100 text-red-800"
+                          }`}>
+                            {trend.status}
+                          </Badge>
+                        </div>
+                        <div className="text-xs text-gray-500">{trend.timeframe}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-3">
+                      <div>
+                        <span className="text-xs text-gray-500">Tendance actuelle:</span>
+                        <div className="font-medium text-sm">{trend.currentTrend}</div>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500">Prédiction:</span>
+                        <div className="font-medium text-sm">{trend.predictedTrend}</div>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500">Confiance:</span>
+                        <div className="font-medium text-sm">{trend.confidence}%</div>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500">Impact:</span>
+                        <div className={`font-medium text-sm ${
+                          trend.impact === "Critique" ? "text-red-600" :
+                          trend.impact === "Élevé" ? "text-orange-600" :
+                          "text-yellow-600"
+                        }`}>
+                          {trend.impact}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Eye className="w-3 h-3" />
+                        <span>Suivi actif</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        <span>Mise à jour: Il y a 2h</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
+              
+              {/* Pagination pour les tendances */}
+              {totalPages > 1 && (
+                <div className="mt-6">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                    onPageChange={setCurrentPage}
+                    onItemsPerPageChange={setItemsPerPage}
+                  />
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

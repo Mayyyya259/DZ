@@ -11,6 +11,16 @@ import { AddNewsForm } from '@/components/forms/AddNewsForm';
 import { useGlobalActions } from '@/hooks/useGlobalActions';
 import { ApiImportModal } from '@/components/modals/ApiImportModal';
 import { useApiModalHandler } from '@/hooks/useApiModalHandler';
+import { Badge } from '@/components/ui/badge';
+import { 
+  MapPin,
+  Award,
+  BookOpen,
+  Gavel,
+  Scale,
+  Building,
+  GraduationCap
+} from 'lucide-react';
 
 export function NewsSection() {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -143,6 +153,204 @@ export function NewsSection() {
     setItemsPerPage: setArticlesItemsPerPage
   } = usePagination({
     data: articlesData,
+    itemsPerPage: 3
+  });
+
+  // Données pour les professions juridiques
+  const legalProfessions = [
+    {
+      id: 1,
+      name: "Dr. Ahmed Benali",
+      profession: "Avocat",
+      speciality: "Droit commercial",
+      experience: "15 ans",
+      location: "Alger",
+      rating: 4.8,
+      cases: 127,
+      publications: 23,
+      status: "Actif"
+    },
+    {
+      id: 2,
+      name: "Mme Fatima Cherif",
+      profession: "Notaire",
+      speciality: "Droit immobilier",
+      experience: "12 ans",
+      location: "Oran",
+      rating: 4.9,
+      cases: 89,
+      publications: 15,
+      status: "Actif"
+    },
+    {
+      id: 3,
+      name: "Dr. Karim Meziane",
+      profession: "Huissier",
+      speciality: "Exécution forcée",
+      experience: "8 ans",
+      location: "Constantine",
+      rating: 4.6,
+      cases: 234,
+      publications: 8,
+      status: "Actif"
+    },
+    {
+      id: 4,
+      name: "Mme Leila Mansouri",
+      profession: "Avocat",
+      speciality: "Droit pénal",
+      experience: "20 ans",
+      location: "Alger",
+      rating: 4.7,
+      cases: 156,
+      publications: 31,
+      status: "Actif"
+    },
+    {
+      id: 5,
+      name: "Dr. Yacine Brahim",
+      profession: "Notaire",
+      speciality: "Droit des sociétés",
+      experience: "10 ans",
+      location: "Annaba",
+      rating: 4.5,
+      cases: 67,
+      publications: 12,
+      status: "Actif"
+    },
+    {
+      id: 6,
+      name: "M. Salim Kaced",
+      profession: "Huissier",
+      speciality: "Recouvrement",
+      experience: "6 ans",
+      location: "Tlemcen",
+      rating: 4.4,
+      cases: 189,
+      publications: 5,
+      status: "Actif"
+    },
+    {
+      id: 7,
+      name: "Dr. Amina Bouaziz",
+      profession: "Avocat",
+      speciality: "Droit administratif",
+      experience: "18 ans",
+      location: "Alger",
+      rating: 4.8,
+      cases: 203,
+      publications: 28,
+      status: "Actif"
+    },
+    {
+      id: 8,
+      name: "M. Kamel Boudiaf",
+      profession: "Notaire",
+      speciality: "Droit familial",
+      experience: "14 ans",
+      location: "Blida",
+      rating: 4.6,
+      cases: 145,
+      publications: 19,
+      status: "Actif"
+    }
+  ];
+
+  // Données pour les cabinets juridiques
+  const legalFirms = [
+    {
+      id: 1,
+      name: "Cabinet Benali & Associés",
+      type: "Cabinet d'avocats",
+      specialities: ["Droit commercial", "Droit des sociétés", "Droit fiscal"],
+      location: "Alger Centre",
+      size: "15 avocats",
+      founded: "2010",
+      rating: 4.8,
+      cases: 1250
+    },
+    {
+      id: 2,
+      name: "Étude Notariale Cherif",
+      type: "Étude notariale",
+      specialities: ["Droit immobilier", "Droit familial", "Successions"],
+      location: "Oran",
+      size: "8 notaires",
+      founded: "2008",
+      rating: 4.9,
+      cases: 890
+    },
+    {
+      id: 3,
+      name: "Office d'Huissier Meziane",
+      type: "Office d'huissier",
+      specialities: ["Exécution forcée", "Recouvrement", "Significations"],
+      location: "Constantine",
+      size: "5 huissiers",
+      founded: "2015",
+      rating: 4.6,
+      cases: 2100
+    },
+    {
+      id: 4,
+      name: "Cabinet Mansouri & Partners",
+      type: "Cabinet d'avocats",
+      specialities: ["Droit pénal", "Droit administratif", "Contentieux"],
+      location: "Alger",
+      size: "12 avocats",
+      founded: "2005",
+      rating: 4.7,
+      cases: 980
+    },
+    {
+      id: 5,
+      name: "Étude Notariale Brahim",
+      type: "Étude notariale",
+      specialities: ["Droit des sociétés", "Fusions-acquisitions", "Contrats"],
+      location: "Annaba",
+      size: "6 notaires",
+      founded: "2012",
+      rating: 4.5,
+      cases: 450
+    },
+    {
+      id: 6,
+      name: "Office d'Huissier Kaced",
+      type: "Office d'huissier",
+      specialities: ["Recouvrement", "Exécution", "Mise en demeure"],
+      location: "Tlemcen",
+      size: "3 huissiers",
+      founded: "2017",
+      rating: 4.4,
+      cases: 1200
+    }
+  ];
+
+  // Pagination pour les professions juridiques
+  const {
+    currentData: paginatedProfessions,
+    currentPage: professionsCurrentPage,
+    totalPages: professionsTotalPages,
+    itemsPerPage: professionsItemsPerPage,
+    totalItems: professionsTotalItems,
+    setCurrentPage: setProfessionsCurrentPage,
+    setItemsPerPage: setProfessionsItemsPerPage
+  } = usePagination({
+    data: legalProfessions,
+    itemsPerPage: 4
+  });
+
+  // Pagination pour les cabinets juridiques
+  const {
+    currentData: paginatedFirms,
+    currentPage: firmsCurrentPage,
+    totalPages: firmsTotalPages,
+    itemsPerPage: firmsItemsPerPage,
+    totalItems: firmsTotalItems,
+    setCurrentPage: setFirmsCurrentPage,
+    setItemsPerPage: setFirmsItemsPerPage
+  } = usePagination({
+    data: legalFirms,
     itemsPerPage: 3
   });
 
@@ -354,16 +562,135 @@ export function NewsSection() {
                 <p className="text-sm text-gray-600">Zoom sur les acteurs clés du monde juridique algérien</p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
-                    {/* Pagination possible ici si besoin */}
-                    {/* ... */}
-                  </div>
-                  <div className="space-y-3">
-                    {/* Pagination possible ici si besoin */}
-                    {/* ... */}
-                  </div>
-                </div>
+                <Tabs defaultValue="professions" className="space-y-4">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="professions">Professionnels</TabsTrigger>
+                    <TabsTrigger value="cabinets">Cabinets</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="professions" className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {paginatedProfessions.map((profession) => (
+                        <div key={profession.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <h4 className="font-semibold text-sm">{profession.name}</h4>
+                              <p className="text-xs text-gray-600">{profession.profession}</p>
+                            </div>
+                            <Badge className="bg-green-100 text-green-800 text-xs">
+                              {profession.status}
+                            </Badge>
+                          </div>
+                          
+                          <div className="space-y-2 text-xs">
+                            <div className="flex items-center gap-2">
+                              <Scale className="w-3 h-3 text-blue-600" />
+                              <span>{profession.speciality}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-3 h-3 text-gray-500" />
+                              <span>{profession.location}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Award className="w-3 h-3 text-yellow-600" />
+                              <span>{profession.experience} d'expérience</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Gavel className="w-3 h-3 text-purple-600" />
+                              <span>{profession.cases} dossiers traités</span>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-3 pt-3 border-t">
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs font-medium">{profession.rating}</span>
+                              <span className="text-xs text-gray-500">/5</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <BookOpen className="w-3 h-3 text-gray-500" />
+                              <span className="text-xs text-gray-500">{profession.publications} publications</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Pagination pour les professionnels */}
+                    {professionsTotalPages > 1 && (
+                      <div className="mt-4">
+                        <Pagination
+                          currentPage={professionsCurrentPage}
+                          totalPages={professionsTotalPages}
+                          totalItems={professionsTotalItems}
+                          itemsPerPage={professionsItemsPerPage}
+                          onPageChange={setProfessionsCurrentPage}
+                          onItemsPerPageChange={setProfessionsItemsPerPage}
+                        />
+                      </div>
+                    )}
+                  </TabsContent>
+
+                  <TabsContent value="cabinets" className="space-y-4">
+                    <div className="space-y-4">
+                      {paginatedFirms.map((firm) => (
+                        <div key={firm.id} className="p-4 border rounded-lg hover:bg-gray-50">
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <h4 className="font-semibold text-sm">{firm.name}</h4>
+                              <p className="text-xs text-gray-600">{firm.type}</p>
+                            </div>
+                            <Badge className="bg-blue-100 text-blue-800 text-xs">
+                              {firm.size}
+                            </Badge>
+                          </div>
+                          
+                          <div className="space-y-2 text-xs">
+                            <div className="flex items-center gap-2">
+                              <Building className="w-3 h-3 text-blue-600" />
+                              <span>{firm.location}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Calendar className="w-3 h-3 text-gray-500" />
+                              <span>Fondé en {firm.founded}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Gavel className="w-3 h-3 text-purple-600" />
+                              <span>{firm.cases} dossiers traités</span>
+                            </div>
+                          </div>
+                          
+                          <div className="mt-3">
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {firm.specialities.map((speciality, index) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {speciality}
+                                </Badge>
+                              ))}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs font-medium">{firm.rating}</span>
+                              <span className="text-xs text-gray-500">/5</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Pagination pour les cabinets */}
+                    {firmsTotalPages > 1 && (
+                      <div className="mt-4">
+                        <Pagination
+                          currentPage={firmsCurrentPage}
+                          totalPages={firmsTotalPages}
+                          totalItems={firmsTotalItems}
+                          itemsPerPage={firmsItemsPerPage}
+                          onPageChange={setFirmsCurrentPage}
+                          onItemsPerPageChange={setFirmsItemsPerPage}
+                        />
+                      </div>
+                    )}
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
           </div>
