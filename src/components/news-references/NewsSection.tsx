@@ -77,6 +77,75 @@ export function NewsSection() {
     itemsPerPage: 10
   });
 
+  // Données pour les analyses
+  const analysesData = [
+    { id: 1, title: "L'essor du Droit Numérique", author: "Me. Ali Ahmed", summary: "Analyse de l'impact croissant du numérique sur le droit..." },
+    { id: 2, title: "La Compliance au cœur des Entreprises", author: "Dr. Fatima Ben", summary: "Décryptage des enjeux de la compliance pour les entreprises algériennes..." },
+    { id: 3, title: "Les Défis de l'Arbitrage International", author: "Pr. Karim Said", summary: "Analyse des défis et opportunités de l'arbitrage international..." },
+    { id: 4, title: "L'Intelligence Artificielle et le Droit", author: "LegalTechDZ", summary: "Quel est le futur de l'IA dans le secteur juridique ?..." },
+    { id: 5, title: "La Fiscalité des Entreprises en Algérie", author: "TaxAdvisorDZ", summary: "Panorama des réformes fiscales récentes..." },
+    { id: 6, title: "Le Droit du Travail en Algérie", author: "LabourRights", summary: "Évolutions majeures du droit du travail..." },
+    { id: 7, title: "La Protection des Données en Algérie", author: "DataLawyer", summary: "Nouvelles obligations pour les entreprises..." }
+  ];
+
+  // Pagination pour les analyses
+  const {
+    currentData: paginatedAnalyses,
+    currentPage: analysesCurrentPage,
+    totalPages: analysesTotalPages,
+    itemsPerPage: analysesItemsPerPage,
+    totalItems: analysesTotalItems,
+    setCurrentPage: setAnalysesCurrentPage,
+    setItemsPerPage: setAnalysesItemsPerPage
+  } = usePagination({
+    data: analysesData,
+    itemsPerPage: 3
+  });
+
+  // Données pour les discussions
+  const discussionsData = [
+    { id: 1, title: "La Réforme du Code de Commerce", author: "Ali23", summary: "Quels sont les impacts de la réforme sur les entreprises ?..." },
+    { id: 2, title: "Les Nouveaux Défis de la Profession d'Avocat", author: "YasmineK", summary: "Comment s'adapter aux mutations du monde juridique ?..." },
+    { id: 3, title: "L'Intelligence Artificielle et le Droit", author: "LegalTechDZ", summary: "Quel est le futur de l'IA dans le secteur juridique ?..." },
+    { id: 4, title: "La Compliance dans les PME", author: "PMEExpert", summary: "Quels outils pour une conformité efficace ?..." },
+    { id: 5, title: "La Médiation en Algérie", author: "MediationDZ", summary: "La médiation comme alternative au contentieux..." }
+  ];
+  const articlesData = [
+    { id: 1, title: "La Protection des Données en Algérie", author: "DataLawyer" },
+    { id: 2, title: "Les Contrats Commerciaux Internationaux", author: "TradeExpert" },
+    { id: 3, title: "Le Droit du Travail en Algérie", author: "LabourRights" },
+    { id: 4, title: "La Fiscalité des Entreprises en Algérie", author: "TaxAdvisorDZ" },
+    { id: 5, title: "L'Arbitrage et la Médiation en Algérie", author: "ADRSolutions" },
+    { id: 6, title: "Le Droit de la Propriété Intellectuelle", author: "IntellectualProperty" }
+  ];
+
+  // Pagination pour les discussions
+  const {
+    currentData: paginatedDiscussions,
+    currentPage: discussionsCurrentPage,
+    totalPages: discussionsTotalPages,
+    itemsPerPage: discussionsItemsPerPage,
+    totalItems: discussionsTotalItems,
+    setCurrentPage: setDiscussionsCurrentPage,
+    setItemsPerPage: setDiscussionsItemsPerPage
+  } = usePagination({
+    data: discussionsData,
+    itemsPerPage: 2
+  });
+  // Pagination pour les articles
+  const {
+    currentData: paginatedArticles,
+    currentPage: articlesCurrentPage,
+    totalPages: articlesTotalPages,
+    itemsPerPage: articlesItemsPerPage,
+    totalItems: articlesTotalItems,
+    setCurrentPage: setArticlesCurrentPage,
+    setItemsPerPage: setArticlesItemsPerPage
+  } = usePagination({
+    data: articlesData,
+    itemsPerPage: 3
+  });
+
   const handleAdd = () => {
     console.log('Opening add news form...');
     setShowAddForm(true);
@@ -252,28 +321,24 @@ export function NewsSection() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">L'essor du Droit Numérique</span>
-                      <span className="text-xs text-gray-500">Par Me. Ali Ahmed</span>
+                  {paginatedAnalyses.map((analysis) => (
+                    <div key={analysis.id} className="p-3 border rounded hover:bg-gray-50">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium text-sm">{analysis.title}</span>
+                        <span className="text-xs text-gray-500">Par {analysis.author}</span>
+                      </div>
+                      <p className="text-xs text-gray-600">{analysis.summary}</p>
                     </div>
-                    <p className="text-xs text-gray-600">Analyse de l'impact croissant du numérique sur le droit...</p>
-                  </div>
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">La Compliance au cœur des Entreprises</span>
-                      <span className="text-xs text-gray-500">Par Dr. Fatima Ben</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Décryptage des enjeux de la compliance pour les entreprises algériennes...</p>
-                  </div>
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">Les Défis de l'Arbitrage International</span>
-                      <span className="text-xs text-gray-500">Par Pr. Karim Said</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Analyse des défis et opportunités de l'arbitrage international...</p>
-                  </div>
+                  ))}
                 </div>
+                <Pagination
+                  currentPage={analysesCurrentPage}
+                  totalPages={analysesTotalPages}
+                  totalItems={analysesTotalItems}
+                  itemsPerPage={analysesItemsPerPage}
+                  onPageChange={setAnalysesCurrentPage}
+                  onItemsPerPageChange={setAnalysesItemsPerPage}
+                />
                 <Button className="w-full">
                   Consulter toutes les analyses
                 </Button>
@@ -291,32 +356,12 @@ export function NewsSection() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Le Rôle de l'Avocat en 2024</div>
-                      <p className="text-xs text-gray-600">Par Me. Yasmine Khodja</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Les Enjeux du Notariat Moderne</div>
-                      <p className="text-xs text-gray-600">Par Notaire Nabil Bouzidi</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">L'Expert-Comptable face aux Nouvelles Normes</div>
-                      <p className="text-xs text-gray-600">Par Expert Omar Djaffar</p>
-                    </div>
+                    {/* Pagination possible ici si besoin */}
+                    {/* ... */}
                   </div>
                   <div className="space-y-3">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Le Magistrat, Garant de la Justice</div>
-                      <p className="text-xs text-gray-600">Par Juge Amina Mansouri</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Le Commissaire aux Comptes, un Pilier</div>
-                      <p className="text-xs text-gray-600">Par CAC Sami Fekhar</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">L'Huissier de Justice, un Acteur Clé</div>
-                      <p className="text-xs text-gray-600">Par Huissier Rafik Chiali</p>
-                    </div>
+                    {/* Pagination possible ici si besoin */}
+                    {/* ... */}
                   </div>
                 </div>
               </CardContent>
@@ -354,34 +399,29 @@ export function NewsSection() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">La Réforme du Code de Commerce</span>
-                      <span className="text-xs text-gray-500">Par Ali23</span>
+                  {paginatedDiscussions.map((discussion) => (
+                    <div key={discussion.id} className="p-3 border rounded hover:bg-gray-50">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium text-sm">{discussion.title}</span>
+                        <span className="text-xs text-gray-500">Par {discussion.author}</span>
+                      </div>
+                      <p className="text-xs text-gray-600">{discussion.summary}</p>
                     </div>
-                    <p className="text-xs text-gray-600">Quels sont les impacts de la réforme sur les entreprises ?...</p>
-                  </div>
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">Les Nouveaux Défis de la Profession d'Avocat</span>
-                      <span className="text-xs text-gray-500">Par YasmineK</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Comment s'adapter aux mutations du monde juridique ?...</p>
-                  </div>
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">L'Intelligence Artificielle et le Droit</span>
-                      <span className="text-xs text-gray-500">Par LegalTechDZ</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Quel est le futur de l'IA dans le secteur juridique ?...</p>
-                  </div>
+                  ))}
                 </div>
+                <Pagination
+                  currentPage={discussionsCurrentPage}
+                  totalPages={discussionsTotalPages}
+                  totalItems={discussionsTotalItems}
+                  itemsPerPage={discussionsItemsPerPage}
+                  onPageChange={setDiscussionsCurrentPage}
+                  onItemsPerPageChange={setDiscussionsItemsPerPage}
+                />
                 <Button className="w-full">
                   Rejoindre les discussions
                 </Button>
               </CardContent>
             </Card>
-
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -392,35 +432,21 @@ export function NewsSection() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">La Protection des Données en Algérie</div>
-                      <p className="text-xs text-gray-600">Par DataLawyer</p>
+                  {paginatedArticles.map((article) => (
+                    <div key={article.id} className="p-3 bg-gray-50 rounded">
+                      <div className="font-medium text-sm">{article.title}</div>
+                      <p className="text-xs text-gray-600">Par {article.author}</p>
                     </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Les Contrats Commerciaux Internationaux</div>
-                      <p className="text-xs text-gray-600">Par TradeExpert</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Le Droit du Travail en Algérie</div>
-                      <p className="text-xs text-gray-600">Par LabourRights</p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">La Fiscalité des Entreprises en Algérie</div>
-                      <p className="text-xs text-gray-600">Par TaxAdvisorDZ</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">L'Arbitrage et la Médiation en Algérie</div>
-                      <p className="text-xs text-gray-600">Par ADRSolutions</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Le Droit de la Propriété Intellectuelle</div>
-                      <p className="text-xs text-gray-600">Par IntellectualProperty</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
+                <Pagination
+                  currentPage={articlesCurrentPage}
+                  totalPages={articlesTotalPages}
+                  totalItems={articlesTotalItems}
+                  itemsPerPage={articlesItemsPerPage}
+                  onPageChange={setArticlesCurrentPage}
+                  onItemsPerPageChange={setArticlesItemsPerPage}
+                />
               </CardContent>
             </Card>
           </div>
