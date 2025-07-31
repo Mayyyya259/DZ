@@ -35,5 +35,14 @@ Le composant **"Fil d'Approbation OCR-IA"** est maintenant **100% IDENTIQUE** au
 ## 🌐 BRANCHE
 **LYO** - https://github.com/Mayyyya259/DZ/tree/LYO
 
+### ✅ Données Enrichies
+- **12 documents d'exemple** complets avec :
+  - Lois, Décrets, Arrêtés, Ordonnances, Codes
+  - Statuts variés (En attente, En révision, Approuvés, À réviser, Rejetés)
+  - Priorités différentes (Haute, Moyenne, Faible)
+  - Modes d'insertion (OCR-IA et Manuelle)
+  - Commentaires et assignations
+  - Données OCR réalistes
+
 ## ✨ STATUT
-**SYNCHRONISATION COMPLÈTE ET RÉUSSIE** ✅
+**SYNCHRONISATION COMPLÈTE ET RÉUSSIE AVEC 12 EXEMPLES** ✅

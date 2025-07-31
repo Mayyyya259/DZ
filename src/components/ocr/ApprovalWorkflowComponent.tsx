@@ -97,6 +97,210 @@ const ApprovalWorkflowComponent: React.FC = () => {
           }
         ],
         ocrData: { numero: '25-45', dateGregorienne: '12 février 2025' }
+      },
+      {
+        id: '3',
+        title: 'ARRÊTÉ MINISTÉRIEL N° 25-125 - Procédures Judiciaires',
+        type: 'Arrêté',
+        legalCategory: 'arrete',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 6 * 60 * 60 * 1000),
+        status: 'approved',
+        confidence: 92.3,
+        priority: 'low',
+        assignedTo: 'Dr. Karim Meziane',
+        comments: [],
+        ocrData: { numero: '25-125', dateGregorienne: '10 février 2025' }
+      },
+      {
+        id: '4',
+        title: 'ORDONNANCE N° 25-02 - Code de l\'Investissement',
+        type: 'Ordonnance',
+        legalCategory: 'ordonnance',
+        insertionType: 'manual',
+        submittedBy: 'Amina Bouaziz',
+        submissionDate: new Date(Date.now() - 8 * 60 * 60 * 1000),
+        status: 'needs_revision',
+        confidence: 100,
+        priority: 'high',
+        assignedTo: 'Dr. Ahmed Benali',
+        comments: [
+          {
+            id: '2',
+            author: 'Dr. Ahmed Benali',
+            content: 'Modification de la section économique requise.',
+            timestamp: new Date(Date.now() - 45 * 60 * 1000),
+            type: 'revision_request'
+          }
+        ],
+        ocrData: { numero: '25-02', dateGregorienne: '8 février 2025' }
+      },
+      {
+        id: '5',
+        title: 'CODE CIVIL ALGÉRIEN - Mise à jour 2025',
+        type: 'Code',
+        legalCategory: 'code',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 12 * 60 * 60 * 1000),
+        status: 'rejected',
+        confidence: 78.9,
+        priority: 'medium',
+        assignedTo: 'Dr. Fatima Cherif',
+        comments: [
+          {
+            id: '3',
+            author: 'Dr. Fatima Cherif',
+            content: 'Qualité OCR insuffisante, ressaisie manuelle nécessaire.',
+            timestamp: new Date(Date.now() - 60 * 60 * 1000),
+            type: 'rejection'
+          }
+        ],
+        ocrData: { numero: 'CC-2025', dateGregorienne: '5 février 2025' }
+      },
+      {
+        id: '6',
+        title: 'DÉCRET EXÉCUTIF N° 25-67 - Modernisation des Services Publics',
+        type: 'Décret Exécutif',
+        legalCategory: 'decret',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 16 * 60 * 60 * 1000),
+        status: 'under_review',
+        confidence: 94.2,
+        priority: 'high',
+        assignedTo: 'Dr. Karim Meziane',
+        comments: [
+          {
+            id: '4',
+            author: 'Dr. Karim Meziane',
+            content: 'Révision des dispositions techniques en cours.',
+            timestamp: new Date(Date.now() - 90 * 60 * 1000),
+            type: 'comment'
+          }
+        ],
+        ocrData: { numero: '25-67', dateGregorienne: '3 février 2025' }
+      },
+      {
+        id: '7',
+        title: 'LOI N° 25-03 - Protection des Données Personnelles',
+        type: 'Loi',
+        legalCategory: 'loi',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 18 * 60 * 60 * 1000),
+        status: 'pending',
+        confidence: 89.7,
+        priority: 'high',
+        comments: [],
+        ocrData: { numero: '25-03', dateGregorienne: '2 février 2025' }
+      },
+      {
+        id: '8',
+        title: 'ARRÊTÉ INTERMINISTÉRIEL N° 25-156 - Normes Environnementales',
+        type: 'Arrêté',
+        legalCategory: 'arrete',
+        insertionType: 'manual',
+        submittedBy: 'Leila Mansouri',
+        submissionDate: new Date(Date.now() - 20 * 60 * 60 * 1000),
+        status: 'approved',
+        confidence: 100,
+        priority: 'medium',
+        assignedTo: 'Dr. Yacine Brahim',
+        comments: [
+          {
+            id: '5',
+            author: 'Dr. Yacine Brahim',
+            content: 'Document validé, conforme aux standards.',
+            timestamp: new Date(Date.now() - 120 * 60 * 1000),
+            type: 'approval'
+          }
+        ],
+        ocrData: { numero: '25-156', dateGregorienne: '1er février 2025' }
+      },
+      {
+        id: '9',
+        title: 'ORDONNANCE N° 25-04 - Réforme du Code Pénal',
+        type: 'Ordonnance',
+        legalCategory: 'ordonnance',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        status: 'needs_revision',
+        confidence: 85.4,
+        priority: 'high',
+        assignedTo: 'Dr. Salim Kaced',
+        comments: [
+          {
+            id: '6',
+            author: 'Dr. Salim Kaced',
+            content: 'Articles 142-158 à revoir, OCR imprécis.',
+            timestamp: new Date(Date.now() - 180 * 60 * 1000),
+            type: 'revision_request'
+          }
+        ],
+        ocrData: { numero: '25-04', dateGregorienne: '30 janvier 2025' }
+      },
+      {
+        id: '10',
+        title: 'CODE DE PROCÉDURE CIVILE - Amendements 2025',
+        type: 'Code',
+        legalCategory: 'code',
+        insertionType: 'manual',
+        submittedBy: 'Nadia Zeghiche',
+        submissionDate: new Date(Date.now() - 28 * 60 * 60 * 1000),
+        status: 'under_review',
+        confidence: 100,
+        priority: 'medium',
+        assignedTo: 'Dr. Mohamed Tabi',
+        comments: [
+          {
+            id: '7',
+            author: 'Dr. Mohamed Tabi',
+            content: 'Révision approfondie en cours, plusieurs amendements à valider.',
+            timestamp: new Date(Date.now() - 240 * 60 * 1000),
+            type: 'comment'
+          }
+        ],
+        ocrData: { numero: 'CPC-2025', dateGregorienne: '28 janvier 2025' }
+      },
+      {
+        id: '11',
+        title: 'DÉCRET EXÉCUTIF N° 25-78 - Digitalisation Administrative',
+        type: 'Décret Exécutif',
+        legalCategory: 'decret',
+        insertionType: 'ocr',
+        submittedBy: 'Service OCR Automatique',
+        submissionDate: new Date(Date.now() - 32 * 60 * 60 * 1000),
+        status: 'pending',
+        confidence: 91.8,
+        priority: 'medium',
+        comments: [],
+        ocrData: { numero: '25-78', dateGregorienne: '26 janvier 2025' }
+      },
+      {
+        id: '12',
+        title: 'LOI N° 25-05 - Économie Numérique et Start-ups',
+        type: 'Loi',
+        legalCategory: 'loi',
+        insertionType: 'manual',
+        submittedBy: 'Rachid Bensalem',
+        submissionDate: new Date(Date.now() - 36 * 60 * 60 * 1000),
+        status: 'approved',
+        confidence: 100,
+        priority: 'high',
+        assignedTo: 'Dr. Karima Djaout',
+        comments: [
+          {
+            id: '8',
+            author: 'Dr. Karima Djaout',
+            content: 'Excellent travail, loi approuvée sans réserve.',
+            timestamp: new Date(Date.now() - 300 * 60 * 1000),
+            type: 'approval'
+          }
+        ],
+        ocrData: { numero: '25-05', dateGregorienne: '24 janvier 2025' }
       }
     ];
     setDocuments(mockDocuments);
