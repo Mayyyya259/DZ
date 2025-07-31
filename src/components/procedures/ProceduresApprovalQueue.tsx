@@ -213,7 +213,10 @@ const ProceduresApprovalQueue: React.FC = () => {
     const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          doc.type.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filter === 'all' || doc.status === filter;
-    const matchesType = typeFilter === 'all' || doc.procedureCategory === typeFilter;
+    // Nouvelle logique pour le filtre "Type de document"
+    const matchesType = typeFilter === 'all' || 
+      (typeFilter === 'legal' && ['juridique'].includes(doc.procedureCategory)) ||
+      (typeFilter === 'procedure' && ['commercial', 'administrative', 'fiscal', 'urbanisme', 'immigration'].includes(doc.procedureCategory));
     const matchesInsertion = insertionFilter === 'all' || doc.insertionType === insertionFilter;
     return matchesSearch && matchesStatus && matchesType && matchesInsertion;
   });
