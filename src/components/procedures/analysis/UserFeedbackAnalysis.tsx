@@ -2,6 +2,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
+import { useState } from 'react';
 import { 
   MessageCircle, 
   ThumbsUp, 
@@ -82,6 +85,8 @@ const mockFeedbackData = {
 };
 
 export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) {
+  const [selectedProcedure, setSelectedProcedure] = useState<string>('1');
+
   const getSatisfactionColor = (rating: number) => {
     if (rating >= 4) return 'text-green-600';
     if (rating >= 3) return 'text-yellow-600';
@@ -93,62 +98,79 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
     return <TrendingUp className="w-4 h-4 text-red-500 rotate-180" />;
   };
 
+  // Pagination pour les commentaires
+  const feedbackData = mockFeedbackData[selectedProcedure as keyof typeof mockFeedbackData];
+  const comments = feedbackData?.comments || [];
+  
+  const {
+    currentData: paginatedComments,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: comments,
+    itemsPerPage: 5
+  });
+
   return (
     <div className="space-y-6">
       {/* Aperçu général du feedback */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Avis</p>
-                <p className="text-2xl font-bold">
-                  {procedures.reduce((acc, p) => acc + p.feedbackCount, 0)}
-                </p>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <ThumbsUp className="w-6 h-6 text-green-600" />
               </div>
-              <MessageCircle className="w-8 h-8 text-blue-600" />
+              <p className="text-sm font-medium text-gray-600">Satisfaction Moyenne</p>
+              <p className="text-2xl font-bold mt-2 text-green-600">
+                {procedures.reduce((acc, p) => acc + p.userSatisfaction, 0) / procedures.length.toFixed(1)}/5
+              </p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Satisfaction Moyenne</p>
-                <p className="text-2xl font-bold">
-                  {(procedures.reduce((acc, p) => acc + p.userSatisfaction, 0) / procedures.length).toFixed(1)}/5
-                </p>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <MessageCircle className="w-6 h-6 text-blue-600" />
               </div>
-              <Star className="w-8 h-8 text-yellow-600" />
+              <p className="text-sm font-medium text-gray-600">Total Feedback</p>
+              <p className="text-2xl font-bold mt-2 text-blue-600">
+                {procedures.reduce((acc, p) => acc + p.feedbackCount, 0)}
+              </p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Avis Positifs</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {Math.round((procedures.filter(p => p.userSatisfaction >= 4).length / procedures.length) * 100)}%
-                </p>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Users className="w-6 h-6 text-purple-600" />
               </div>
-              <ThumbsUp className="w-8 h-8 text-green-600" />
+              <p className="text-sm font-medium text-gray-600">Utilisateurs Actifs</p>
+              <p className="text-2xl font-bold mt-2 text-purple-600">
+                {Math.round(procedures.reduce((acc, p) => acc + p.feedbackCount, 0) * 0.8)}
+              </p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Avis Négatifs</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {Math.round((procedures.filter(p => p.userSatisfaction < 3).length / procedures.length) * 100)}%
-                </p>
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Clock className="w-6 h-6 text-orange-600" />
               </div>
-              <ThumbsDown className="w-8 h-8 text-red-600" />
+              <p className="text-sm font-medium text-gray-600">Temps Moyen</p>
+              <p className="text-2xl font-bold mt-2 text-orange-600">
+                {Math.round(procedures.reduce((acc, p) => acc + p.averageTime, 0) / procedures.length)}j
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -157,30 +179,47 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
       {/* Analyse détaillée par procédure */}
       <div className="space-y-6">
         {procedures.map((procedure) => {
-          const feedbackData = mockFeedbackData[procedure.id as keyof typeof mockFeedbackData];
-          const totalRatings = Object.values(feedbackData?.ratings || {}).reduce((acc, count) => acc + count, 0);
+          const currentFeedbackData = mockFeedbackData[procedure.id as keyof typeof mockFeedbackData];
+          const currentComments = currentFeedbackData?.comments || [];
           
+          // Pagination pour les commentaires de cette procédure
+          const {
+            currentData: paginatedProcedureComments,
+            currentPage: procedureCurrentPage,
+            totalPages: procedureTotalPages,
+            itemsPerPage: procedureItemsPerPage,
+            totalItems: procedureTotalItems,
+            setCurrentPage: setProcedureCurrentPage,
+            setItemsPerPage: setProcedureItemsPerPage
+          } = usePagination({
+            data: currentComments,
+            itemsPerPage: 5
+          });
+
+          const totalRatings = currentFeedbackData ? Object.values(currentFeedbackData.ratings).reduce((acc, count) => acc + count, 0) : 0;
+
           return (
             <Card key={procedure.id}>
               <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="w-5 h-5" />
-                    Feedback: {procedure.name}
-                  </CardTitle>
-                  <div className="flex items-center gap-4">
-                    <Badge variant="outline" className="flex items-center gap-1">
-                      <MessageCircle className="w-3 h-3" />
-                      {procedure.feedbackCount} avis
-                    </Badge>
-                    <div className="flex items-center gap-1">
-                      <span className={`font-semibold ${getSatisfactionColor(procedure.userSatisfaction)}`}>
-                        {procedure.userSatisfaction}/5
-                      </span>
-                      {getTrendIcon(procedure.trends.satisfactionChange)}
-                      <span className={`text-xs ${procedure.trends.satisfactionChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {Math.abs(procedure.trends.satisfactionChange)}%
-                      </span>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <MessageCircle className="w-5 h-5 text-blue-600" />
+                      {procedure.name}
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {procedure.feedbackCount} commentaires • Satisfaction: {procedure.userSatisfaction}/5
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="text-right">
+                      <div className="text-sm text-gray-600">Tendance</div>
+                      <div className="flex items-center gap-1">
+                        {getTrendIcon(procedure.trends.satisfactionChange)}
+                        <span className={`text-sm font-medium ${procedure.trends.satisfactionChange > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          {Math.abs(procedure.trends.satisfactionChange)}%
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -195,7 +234,7 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
                     </h4>
                     <div className="space-y-3">
                       {[5, 4, 3, 2, 1].map((rating) => {
-                        const count = feedbackData?.ratings?.[rating as keyof typeof feedbackData.ratings] || 0;
+                        const count = currentFeedbackData?.ratings?.[rating as keyof typeof currentFeedbackData.ratings] || 0;
                         const percentage = totalRatings > 0 ? Math.round((count / totalRatings) * 100) : 0;
                         
                         return (
@@ -221,7 +260,7 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
                       Problèmes Identifiés
                     </h4>
                     <div className="space-y-3">
-                      {feedbackData?.commonIssues?.map((issue, index) => (
+                      {currentFeedbackData?.commonIssues?.map((issue, index) => (
                         <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                           <div>
                             <p className="font-medium text-sm">{issue.issue}</p>
@@ -243,7 +282,7 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
                     Commentaires Récents
                   </h4>
                   <div className="space-y-3">
-                    {feedbackData?.comments?.map((comment) => (
+                    {paginatedProcedureComments.map((comment) => (
                       <div key={comment.id} className="border rounded-lg p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
@@ -269,6 +308,20 @@ export function UserFeedbackAnalysis({ procedures }: UserFeedbackAnalysisProps) 
                       </div>
                     ))}
                   </div>
+                  
+                  {/* Pagination pour les commentaires */}
+                  {procedureTotalPages > 1 && (
+                    <div className="mt-6">
+                      <Pagination
+                        currentPage={procedureCurrentPage}
+                        totalPages={procedureTotalPages}
+                        totalItems={procedureTotalItems}
+                        itemsPerPage={procedureItemsPerPage}
+                        onPageChange={setProcedureCurrentPage}
+                        onItemsPerPageChange={setProcedureItemsPerPage}
+                      />
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

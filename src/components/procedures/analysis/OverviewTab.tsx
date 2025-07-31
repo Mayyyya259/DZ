@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Clock, 
   FileText, 
@@ -19,6 +21,20 @@ interface OverviewTabProps {
 }
 
 export function OverviewTab({ procedures }: OverviewTabProps) {
+  // Pagination pour les procédures
+  const {
+    currentData: paginatedProcedures,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: procedures,
+    itemsPerPage: 6
+  });
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Graphique de complexité */}
@@ -41,7 +57,7 @@ export function OverviewTab({ procedures }: OverviewTabProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {procedures.map((procedure) => {
+            {paginatedProcedures.map((procedure) => {
               const complexity = getComplexityLevel(procedure.complexityScore);
               return (
                 <div key={procedure.id} className="p-4 border rounded-lg hover:bg-gray-50">
@@ -91,6 +107,20 @@ export function OverviewTab({ procedures }: OverviewTabProps) {
               );
             })}
           </div>
+          
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                onItemsPerPageChange={setItemsPerPage}
+              />
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
