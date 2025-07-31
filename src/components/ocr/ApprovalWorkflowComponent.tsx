@@ -307,9 +307,13 @@ const ApprovalWorkflowComponent: React.FC = () => {
   }, []);
 
   const filteredDocuments = documents.filter(doc => {
-    const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         doc.type.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filter === 'all' || doc.status === filter;
-    const matchesType = typeFilter === 'all' || doc.legalCategory === typeFilter;
+    // Nouvelle logique pour le filtre "Type de document"
+    const matchesType = typeFilter === 'all' || 
+      (typeFilter === 'textes_juridiques' && ['loi', 'decret', 'arrete', 'ordonnance', 'code'].includes(doc.legalCategory)) ||
+      (typeFilter === 'procedures_administratives' && ['procedure'].includes(doc.legalCategory));
     const matchesInsertion = insertionFilter === 'all' || doc.insertionType === insertionFilter;
     return matchesSearch && matchesStatus && matchesType && matchesInsertion;
   });
@@ -453,15 +457,30 @@ const ApprovalWorkflowComponent: React.FC = () => {
           <Card className="p-4">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex items-center">
-                <span className="text-sm font-medium text-gray-700 mr-3">Type de texte :</span>
+                <span className="text-sm font-medium text-gray-700 mr-3">Type de document :</span>
               </div>
               <div className="flex gap-2">
-                <Button variant={typeFilter === 'all' ? 'default' : 'outline'} size="sm" onClick={() => setTypeFilter('all')}>Tous</Button>
-                <Button variant={typeFilter === 'loi' ? 'default' : 'outline'} size="sm" onClick={() => setTypeFilter('loi')}>Lois</Button>
-                <Button variant={typeFilter === 'decret' ? 'default' : 'outline'} size="sm" onClick={() => setTypeFilter('decret')}>Décrets</Button>
-                <Button variant={typeFilter === 'arrete' ? 'default' : 'outline'} size="sm" onClick={() => setTypeFilter('arrete')}>Arrêtés</Button>
-                <Button variant={typeFilter === 'ordonnance' ? 'default' : 'outline'} size="sm" onClick={() => setTypeFilter('ordonnance')}>Ordonnances</Button>
-                <Button variant={typeFilter === 'code' ? 'default' : 'outline'} size="sm" onClick={() => setTypeFilter('code')}>Codes</Button>
+                <Button
+                  variant={typeFilter === 'all' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setTypeFilter('all')}
+                >
+                  Tous
+                </Button>
+                <Button
+                  variant={typeFilter === 'textes_juridiques' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setTypeFilter('textes_juridiques')}
+                >
+                  Textes juridiques
+                </Button>
+                <Button
+                  variant={typeFilter === 'procedures_administratives' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setTypeFilter('procedures_administratives')}
+                >
+                  Procédures administratives
+                </Button>
               </div>
             </div>
           </Card>
